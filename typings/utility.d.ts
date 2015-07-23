@@ -1,3 +1,8 @@
+/// <reference path="typings/chai/chai.d.ts" />
+/// <reference path="typings/mocha/mocha.d.ts" />
+/// <reference path="typings/angularMocks.d.ts" />
+/// <reference path="typings/chaiAssertions.d.ts" />
+/// <reference path="typings/sinon/sinon.d.ts" />
 declare module rl.utilities.array {
     var moduleName: string;
     var serviceName: string;
@@ -151,10 +156,6 @@ declare module rl.utilities.object {
         isNullOrWhitespace(object: string): boolean;
         isNullOrWhitespace(object: any): boolean;
     }
-    class ObjectUtility implements IObjectUtility {
-        isNullOrEmpty(object: any): boolean;
-        isNullOrWhitespace(object: any): boolean;
-    }
 }
 declare module rl.utilities.parentChildBehavior {
     var moduleName: string;
@@ -216,6 +217,15 @@ declare module rl.utilities.test {
         directive: (dom: string) => IDirectiveResult;
     }
     var angularFixture: IAngularFixture;
+}
+interface ITestObj {
+    prop: number;
+}
+interface IKeyObj {
+    key: number;
+}
+interface ITestBehavior {
+    action: Function;
 }
 declare module rl.utilities.test {
     interface IMock {
