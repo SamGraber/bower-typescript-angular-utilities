@@ -29,6 +29,40 @@ declare module rl.utilities.services.array {
         }): TDataType[];
     }
 }
+declare module rl.utilities.services.object {
+    var moduleName: string;
+    var serviceName: string;
+    interface IObjectUtility {
+        isNullOrEmpty(object: any[]): boolean;
+        isNullOrEmpty(object: number): boolean;
+        isNullOrEmpty(object: string): boolean;
+        isNullOrEmpty(object: any): boolean;
+        isNullOrWhitespace(object: any[]): boolean;
+        isNullOrWhitespace(object: number): boolean;
+        isNullOrWhitespace(object: string): boolean;
+        isNullOrWhitespace(object: any): boolean;
+        areEqual(obj1: any, obj2: any): boolean;
+        toString(object: any): string;
+        valueOrDefault(value: any, defaultValue: any): any;
+    }
+}
+declare module rl.utilities.filters.isEmpty {
+    var moduleName: string;
+    var serviceName: string;
+    var filterName: string;
+    interface IIsEmptyFilter {
+        (input: any, trueWhenEmpty?: boolean): boolean;
+    }
+}
+declare module rl.utilities.filters.truncate {
+    var moduleName: string;
+    var serviceName: string;
+    var filterName: string;
+    interface ITruncateFilter {
+        (input?: string, truncateTo?: number, includeEllipses?: boolean): string;
+        (input?: number, truncateTo?: number, includeEllipses?: boolean): string;
+    }
+}
 declare module rl.utilities.services.autosaveAction {
     var moduleName: string;
     var serviceName: string;
@@ -157,35 +191,6 @@ declare module rl.utilities.services.contentProvider {
         getInstance(): IContentProviderService;
     }
 }
-declare module rl.utilities.services.number {
-    var moduleName: string;
-    var serviceName: string;
-    interface INumberUtility {
-        preciseRound(num: number, decimals: number): number;
-        integerDivide(dividend: number, divisor: number): number;
-    }
-}
-declare module rl.utilities.services.fileSize {
-    var factoryName: string;
-    interface IFileSize {
-        display(): string;
-    }
-    interface IFileSizeFactory {
-        getInstance(bytes: number): IFileSize;
-    }
-    function fileSizeFactory(numberUtility: number.INumberUtility): IFileSizeFactory;
-}
-declare module rl.utilities.services.fileSize {
-    var simpleFilterName: string;
-    var filterName: string;
-    interface IFileSizeFilter {
-        (bytes?: number): string;
-    }
-    function fileSizeFilter(fileSizeFactory: IFileSizeFactory): IFileSizeFilter;
-}
-declare module rl.utilities.services.fileSize {
-    var moduleName: string;
-}
 declare module rl.utilities.services.date {
     var dateServiceName: string;
     interface IMonth {
@@ -216,22 +221,34 @@ declare module rl.utilities.services.date {
 declare module rl.utilities.services.date {
     var moduleName: string;
 }
-declare module rl.utilities.services.object {
+declare module rl.utilities.services.number {
     var moduleName: string;
     var serviceName: string;
-    interface IObjectUtility {
-        isNullOrEmpty(object: any[]): boolean;
-        isNullOrEmpty(object: number): boolean;
-        isNullOrEmpty(object: string): boolean;
-        isNullOrEmpty(object: any): boolean;
-        isNullOrWhitespace(object: any[]): boolean;
-        isNullOrWhitespace(object: number): boolean;
-        isNullOrWhitespace(object: string): boolean;
-        isNullOrWhitespace(object: any): boolean;
-        areEqual(obj1: any, obj2: any): boolean;
-        toString(object: any): string;
-        valueOrDefault(value: any, defaultValue: any): any;
+    interface INumberUtility {
+        preciseRound(num: number, decimals: number): number;
+        integerDivide(dividend: number, divisor: number): number;
     }
+}
+declare module rl.utilities.services.fileSize {
+    var factoryName: string;
+    interface IFileSize {
+        display(): string;
+    }
+    interface IFileSizeFactory {
+        getInstance(bytes: number): IFileSize;
+    }
+    function fileSizeFactory(numberUtility: number.INumberUtility): IFileSizeFactory;
+}
+declare module rl.utilities.services.fileSize {
+    var simpleFilterName: string;
+    var filterName: string;
+    interface IFileSizeFilter {
+        (bytes?: number): string;
+    }
+    function fileSizeFilter(fileSizeFactory: IFileSizeFactory): IFileSizeFilter;
+}
+declare module rl.utilities.services.fileSize {
+    var moduleName: string;
 }
 declare module rl.utilities.services.string {
     var moduleName: string;
@@ -322,14 +339,6 @@ declare module rl.utilities.services.parentChildBehavior {
         registerChildBehavior<TBehavior>(child: IChild<TBehavior>, behavior: TBehavior): void;
     }
 }
-declare module rl.utilities.services.promise {
-    var moduleName: string;
-    var serviceName: string;
-    interface IPromiseUtility {
-        isPromise(promise: any): boolean;
-        isPromise(promise: ng.IPromise<any>): boolean;
-    }
-}
 declare module rl.utilities.services.test {
     interface IControllerResult<TControllerType> {
         controller: TControllerType;
@@ -374,21 +383,12 @@ declare module rl.utilities.services.time {
         millisecondsToDays(milliseconds: number): number;
     }
 }
-declare module rl.utilities.filters.isEmpty {
+declare module rl.utilities.services.promise {
     var moduleName: string;
     var serviceName: string;
-    var filterName: string;
-    interface IIsEmptyFilter {
-        (input: any, trueWhenEmpty?: boolean): boolean;
-    }
-}
-declare module rl.utilities.filters.truncate {
-    var moduleName: string;
-    var serviceName: string;
-    var filterName: string;
-    interface ITruncateFilter {
-        (input?: string, truncateTo?: number, includeEllipses?: boolean): string;
-        (input?: number, truncateTo?: number, includeEllipses?: boolean): string;
+    interface IPromiseUtility {
+        isPromise(promise: any): boolean;
+        isPromise(promise: ng.IPromise<any>): boolean;
     }
 }
 declare module rl.utilities.behaviors {
