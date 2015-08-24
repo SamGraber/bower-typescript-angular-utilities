@@ -1,3 +1,8 @@
+/// <reference path="typings/chai/chai.d.ts" />
+/// <reference path="typings/mocha/mocha.d.ts" />
+/// <reference path="typings/angularMocks.d.ts" />
+/// <reference path="typings/chaiAssertions.d.ts" />
+/// <reference path="typings/sinon/sinon.d.ts" />
 declare module rl.utilities.behaviors.stopEventPropogation {
     var moduleName: string;
     var directiveName: string;
@@ -29,6 +34,63 @@ declare module rl.utilities.services.array {
         }): TDataType[];
     }
 }
+declare module rl.utilities.services.object {
+    var moduleName: string;
+    var serviceName: string;
+    interface IObjectUtility {
+        isNullOrEmpty(object: any[]): boolean;
+        isNullOrEmpty(object: number): boolean;
+        isNullOrEmpty(object: string): boolean;
+        isNullOrEmpty(object: any): boolean;
+        isNullOrWhitespace(object: any[]): boolean;
+        isNullOrWhitespace(object: number): boolean;
+        isNullOrWhitespace(object: string): boolean;
+        isNullOrWhitespace(object: any): boolean;
+        areEqual(obj1: any, obj2: any): boolean;
+        toString(object: any): string;
+        valueOrDefault(value: any, defaultValue: any): any;
+    }
+}
+declare module rl.utilities.filters.isEmpty {
+    var moduleName: string;
+    var serviceName: string;
+    var filterName: string;
+    interface IIsEmptyFilter {
+        (input: any, trueWhenEmpty?: boolean): boolean;
+    }
+}
+declare module rl.utilities.services.test {
+    interface IControllerResult<TControllerType> {
+        controller: TControllerType;
+        scope: angular.IScope;
+    }
+    interface IDirectiveResult {
+        directive: angular.IDirective;
+        scope: angular.IScope;
+    }
+    interface IAngularFixture {
+        inject: (...serviceNames: string[]) => any;
+        mock: (mocks: any) => void;
+        controller<TControllerType>(controllerName: string, scope?: any, locals?: any): IControllerResult<TControllerType>;
+        directive: (dom: string) => IDirectiveResult;
+    }
+    var angularFixture: IAngularFixture;
+}
+declare module rl.utilities.filters.isEmpty {
+}
+declare module rl.utilities.filters.truncate {
+    var moduleName: string;
+    var serviceName: string;
+    var filterName: string;
+    interface ITruncateFilter {
+        (input?: string, truncateTo?: number, includeEllipses?: boolean): string;
+        (input?: number, truncateTo?: number, includeEllipses?: boolean): string;
+    }
+}
+declare module rl.utilities.filters.truncate {
+}
+declare module rl.utilities.services.array {
+}
 declare module rl.utilities.services.autosaveAction {
     var moduleName: string;
     var serviceName: string;
@@ -54,12 +116,18 @@ declare module rl.utilities.services.autosave {
         }): IAutosaveService;
     }
 }
+declare module rl.utilities.services.autosave {
+}
+declare module rl.utilities.services.autosaveAction {
+}
 declare module rl.utilities.services.boolean {
     var moduleName: string;
     var serviceName: string;
     interface IBooleanUtility {
         toBool(object: any): boolean;
     }
+}
+declare module rl.utilities.services.boolean {
 }
 declare module rl.utilities.services.breakpoints {
     var lg: string;
@@ -142,6 +210,8 @@ declare module rl.utilities.services.breakpoints {
         private updateBreakpoint;
     }
 }
+declare module rl.utilities.services.breakpoints {
+}
 declare module rl.utilities.services.contentProvider {
     var moduleName: string;
     var serviceName: string;
@@ -157,34 +227,7 @@ declare module rl.utilities.services.contentProvider {
         getInstance(): IContentProviderService;
     }
 }
-declare module rl.utilities.services.number {
-    var moduleName: string;
-    var serviceName: string;
-    interface INumberUtility {
-        preciseRound(num: number, decimals: number): number;
-        integerDivide(dividend: number, divisor: number): number;
-    }
-}
-declare module rl.utilities.services.fileSize {
-    var factoryName: string;
-    interface IFileSize {
-        display(): string;
-    }
-    interface IFileSizeFactory {
-        getInstance(bytes: number): IFileSize;
-    }
-    function fileSizeFactory(numberUtility: number.INumberUtility): IFileSizeFactory;
-}
-declare module rl.utilities.services.fileSize {
-    var simpleFilterName: string;
-    var filterName: string;
-    interface IFileSizeFilter {
-        (bytes?: number): string;
-    }
-    function fileSizeFilter(fileSizeFactory: IFileSizeFactory): IFileSizeFilter;
-}
-declare module rl.utilities.services.fileSize {
-    var moduleName: string;
+declare module rl.utilities.services.contentProvider {
 }
 declare module rl.utilities.services.date {
     var dateServiceName: string;
@@ -216,22 +259,38 @@ declare module rl.utilities.services.date {
 declare module rl.utilities.services.date {
     var moduleName: string;
 }
-declare module rl.utilities.services.object {
+declare module rl.utilities.services.date {
+}
+declare module rl.utilities.services.number {
     var moduleName: string;
     var serviceName: string;
-    interface IObjectUtility {
-        isNullOrEmpty(object: any[]): boolean;
-        isNullOrEmpty(object: number): boolean;
-        isNullOrEmpty(object: string): boolean;
-        isNullOrEmpty(object: any): boolean;
-        isNullOrWhitespace(object: any[]): boolean;
-        isNullOrWhitespace(object: number): boolean;
-        isNullOrWhitespace(object: string): boolean;
-        isNullOrWhitespace(object: any): boolean;
-        areEqual(obj1: any, obj2: any): boolean;
-        toString(object: any): string;
-        valueOrDefault(value: any, defaultValue: any): any;
+    interface INumberUtility {
+        preciseRound(num: number, decimals: number): number;
+        integerDivide(dividend: number, divisor: number): number;
     }
+}
+declare module rl.utilities.services.fileSize {
+    var factoryName: string;
+    interface IFileSize {
+        display(): string;
+    }
+    interface IFileSizeFactory {
+        getInstance(bytes: number): IFileSize;
+    }
+    function fileSizeFactory(numberUtility: number.INumberUtility): IFileSizeFactory;
+}
+declare module rl.utilities.services.fileSize {
+    var simpleFilterName: string;
+    var filterName: string;
+    interface IFileSizeFilter {
+        (bytes?: number): string;
+    }
+    function fileSizeFilter(fileSizeFactory: IFileSizeFactory): IFileSizeFilter;
+}
+declare module rl.utilities.services.fileSize {
+    var moduleName: string;
+}
+declare module rl.utilities.services.fileSize {
 }
 declare module rl.utilities.services.string {
     var moduleName: string;
@@ -283,12 +342,22 @@ declare module rl.utilities.services.genericSearchFilter {
         getInstance(): IGenericSearchFilter;
     }
 }
+declare module rl.utilities.services.genericSearchFilter {
+}
 declare module rl.utilities.services.jquery {
     var moduleName: string;
     var serviceName: string;
     interface IJQueryUtility {
         replaceContent(contentArea: JQuery, newContents: JQuery): void;
     }
+}
+declare module rl.utilities.services.jquery {
+}
+declare module rl.utilities.services.object {
+}
+declare module rl.utilities.services.number {
+}
+declare module rl.utilities.services.observable {
 }
 declare module rl.utilities.services.parentChildBehavior {
     var moduleName: string;
@@ -322,6 +391,8 @@ declare module rl.utilities.services.parentChildBehavior {
         registerChildBehavior<TBehavior>(child: IChild<TBehavior>, behavior: TBehavior): void;
     }
 }
+declare module rl.utilities.services.parentChildBehavior {
+}
 declare module rl.utilities.services.promise {
     var moduleName: string;
     var serviceName: string;
@@ -330,33 +401,9 @@ declare module rl.utilities.services.promise {
         isPromise(promise: ng.IPromise<any>): boolean;
     }
 }
-declare module rl.utilities.services.test {
-    interface IControllerResult<TControllerType> {
-        controller: TControllerType;
-        scope: angular.IScope;
-    }
-    interface IDirectiveResult {
-        directive: angular.IDirective;
-        scope: angular.IScope;
-    }
-    interface IAngularFixture {
-        inject: (...serviceNames: string[]) => any;
-        mock: (mocks: any) => void;
-        controller<TControllerType>(controllerName: string, scope?: any, locals?: any): IControllerResult<TControllerType>;
-        directive: (dom: string) => IDirectiveResult;
-    }
-    var angularFixture: IAngularFixture;
+declare module rl.utilities.services.promise {
 }
-declare module rl.utilities.services.test {
-    interface IMock {
-        service(service?: any): any;
-        promise<TDataType>(service: any, methodName: string, data?: TDataType, successful?: boolean): void;
-        promiseWithCallback<TDataType>(service: any, methodName: string, callback: {
-            (...params: any[]): TDataType;
-        }, successful?: boolean): void;
-        flush<TDataType>(service: any): void;
-    }
-    var mock: IMock;
+declare module rl.utilities.services.string {
 }
 declare module rl.utilities.services.time {
     var moduleName: string;
@@ -374,22 +421,18 @@ declare module rl.utilities.services.time {
         millisecondsToDays(milliseconds: number): number;
     }
 }
-declare module rl.utilities.filters.isEmpty {
-    var moduleName: string;
-    var serviceName: string;
-    var filterName: string;
-    interface IIsEmptyFilter {
-        (input: any, trueWhenEmpty?: boolean): boolean;
-    }
+declare module rl.utilities.services.time {
 }
-declare module rl.utilities.filters.truncate {
-    var moduleName: string;
-    var serviceName: string;
-    var filterName: string;
-    interface ITruncateFilter {
-        (input?: string, truncateTo?: number, includeEllipses?: boolean): string;
-        (input?: number, truncateTo?: number, includeEllipses?: boolean): string;
+declare module rl.utilities.services.test {
+    interface IMock {
+        service(service?: any): any;
+        promise<TDataType>(service: any, methodName: string, data?: TDataType, successful?: boolean): void;
+        promiseWithCallback<TDataType>(service: any, methodName: string, callback: {
+            (...params: any[]): TDataType;
+        }, successful?: boolean): void;
+        flush<TDataType>(service: any): void;
     }
+    var mock: IMock;
 }
 declare module rl.utilities.behaviors {
     var moduleName: string;
