@@ -44,13 +44,12 @@ declare module rl.utilities.services.object {
         valueOrDefault(value: any, defaultValue: any): any;
     }
 }
-declare module rl.utilities.filters.truncate {
+declare module rl.utilities.filters.isEmpty {
     var moduleName: string;
     var serviceName: string;
     var filterName: string;
-    interface ITruncateFilter {
-        (input?: string, truncateTo?: number, includeEllipses?: boolean): string;
-        (input?: number, truncateTo?: number, includeEllipses?: boolean): string;
+    interface IIsEmptyFilter {
+        (input: any, trueWhenEmpty?: boolean): boolean;
     }
 }
 declare module rl.utilities.services.test {
@@ -70,17 +69,18 @@ declare module rl.utilities.services.test {
     }
     var angularFixture: IAngularFixture;
 }
-declare module rl.utilities.filters.truncate {
-}
 declare module rl.utilities.filters.isEmpty {
+}
+declare module rl.utilities.filters.truncate {
     var moduleName: string;
     var serviceName: string;
     var filterName: string;
-    interface IIsEmptyFilter {
-        (input: any, trueWhenEmpty?: boolean): boolean;
+    interface ITruncateFilter {
+        (input?: string, truncateTo?: number, includeEllipses?: boolean): string;
+        (input?: number, truncateTo?: number, includeEllipses?: boolean): string;
     }
 }
-declare module rl.utilities.filters.isEmpty {
+declare module rl.utilities.filters.truncate {
 }
 declare module rl.utilities.behaviors.stopEventPropogation {
     var moduleName: string;
@@ -88,6 +88,8 @@ declare module rl.utilities.behaviors.stopEventPropogation {
     interface IStopEventPropagationAttrs extends ng.IAttributes {
         rlStopEventPropagation: string;
     }
+}
+declare module rl.utilities.services.array {
 }
 declare module rl.utilities.services.autosaveAction {
     var moduleName: string;
@@ -115,8 +117,6 @@ declare module rl.utilities.services.autosave {
     }
 }
 declare module rl.utilities.services.autosave {
-}
-declare module rl.utilities.services.array {
 }
 declare module rl.utilities.services.autosaveAction {
 }
@@ -292,6 +292,10 @@ declare module rl.utilities.services.fileSize {
 }
 declare module rl.utilities.services.fileSize {
 }
+declare module rl.utilities.services.number {
+}
+declare module rl.utilities.services.object {
+}
 declare module rl.utilities.services.jquery {
     var moduleName: string;
     var serviceName: string;
@@ -353,11 +357,17 @@ declare module rl.utilities.services.genericSearchFilter {
 }
 declare module rl.utilities.services.genericSearchFilter {
 }
-declare module rl.utilities.services.number {
-}
-declare module rl.utilities.services.object {
-}
 declare module rl.utilities.services.observable {
+}
+declare module rl.utilities.services.promise {
+    var moduleName: string;
+    var serviceName: string;
+    interface IPromiseUtility {
+        isPromise(promise: any): boolean;
+        isPromise(promise: ng.IPromise<any>): boolean;
+    }
+}
+declare module rl.utilities.services.promise {
 }
 declare module rl.utilities.services.parentChildBehavior {
     var moduleName: string;
@@ -393,18 +403,6 @@ declare module rl.utilities.services.parentChildBehavior {
 }
 declare module rl.utilities.services.parentChildBehavior {
 }
-declare module rl.utilities.services.promise {
-    var moduleName: string;
-    var serviceName: string;
-    interface IPromiseUtility {
-        isPromise(promise: any): boolean;
-        isPromise(promise: ng.IPromise<any>): boolean;
-    }
-}
-declare module rl.utilities.services.promise {
-}
-declare module rl.utilities.services.string {
-}
 declare module rl.utilities.services.test {
     interface IMock {
         service(service?: any): any;
@@ -433,6 +431,8 @@ declare module rl.utilities.services.time {
     }
 }
 declare module rl.utilities.services.time {
+}
+declare module rl.utilities.services.string {
 }
 declare module rl.utilities.behaviors {
     var moduleName: string;
