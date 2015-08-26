@@ -5,6 +5,9 @@ declare module rl.utilities.behaviors.stopEventPropogation {
         rlStopEventPropagation: string;
     }
 }
+declare module rl.utilities.behaviors {
+    var moduleName: string;
+}
 declare module rl.utilities.services.array {
     var moduleName: string;
     var serviceName: string;
@@ -63,6 +66,9 @@ declare module rl.utilities.filters.truncate {
         (input?: number, truncateTo?: number, includeEllipses?: boolean): string;
     }
 }
+declare module rl.utilities.filters {
+    var moduleName: string;
+}
 declare module rl.utilities.services.autosaveAction {
     var moduleName: string;
     var serviceName: string;
@@ -95,21 +101,6 @@ declare module rl.utilities.services.boolean {
         toBool(object: any): boolean;
     }
 }
-declare module rl.utilities.services.breakpoints {
-    var lg: string;
-    var md: string;
-    var sm: string;
-    var xs: string;
-}
-declare module rl.utilities.services.breakpoints {
-    var visibleBreakpointsServiceName: string;
-    interface IVisibleBreakpointService {
-        isVisible(breakpoint: string): boolean;
-    }
-    class VisibleBreakpointService implements IVisibleBreakpointService {
-        isVisible(breakpoint: string): boolean;
-    }
-}
 declare module rl.utilities.services.observable {
     var moduleName: string;
     var factoryName: string;
@@ -140,6 +131,176 @@ declare module rl.utilities.services.observable {
         getInstance(): IObservableService;
     }
     function observableServiceFactory(): IObservableServiceFactory;
+}
+declare module rl.utilities.services.contentProvider {
+    var moduleName: string;
+    var serviceName: string;
+    interface IContentProviderService {
+        setContent(content: JQuery): void;
+        setTranscludeContent(transcludeFunction: angular.ITranscludeFunction): void;
+        getContent(selector?: string): JQuery;
+        register(action: {
+            (newText: JQuery): void;
+        }, selector?: string): observable.IUnregisterFunction;
+    }
+    interface IContentProviderServiceFactory {
+        getInstance(): IContentProviderService;
+    }
+}
+declare module rl.utilities.services.time {
+    var moduleName: string;
+    var serviceName: string;
+    interface ITimeUtility {
+        millisecondsToSeconds(milliseconds: number): number;
+        millisecondsToMinutes(milliseconds: number): number;
+        millisecondsToHours(milliseconds: number): number;
+        millisecondsToDays(milliseconds: number): number;
+    }
+    class TimeUtility {
+        millisecondsToSeconds(milliseconds: number): number;
+        millisecondsToMinutes(milliseconds: number): number;
+        millisecondsToHours(milliseconds: number): number;
+        millisecondsToDays(milliseconds: number): number;
+    }
+}
+declare module rl.utilities.services.momentWrapper {
+    var moduleName: string;
+    var serviceName: string;
+    function momentWrapper(): void;
+}
+declare module rl.utilities.types.compareResult {
+    var moduleName: string;
+    enum CompareResult {
+        greater = 1,
+        equal = 0,
+        less = -1,
+    }
+    function getCompareResult(num: number): CompareResult;
+}
+declare module rl.utilities.services.date {
+    import compareResult = rl.utilities.types.compareResult;
+    interface IMonth {
+        name: string;
+        days(year?: number): number;
+    }
+    interface IDateValue {
+        years: number;
+        months: number;
+        days: number;
+    }
+    interface IDateUtility {
+        getFullString(month: number): string;
+        getDays(month: number, year?: number): number;
+        subtractDates(start: string | Date, end: string | Date, dateFormat?: string): IDateValue;
+        subtractDateInDays(start: string | Date, end: string | Date, dateFormat?: string): number;
+        compareDates(date1: string | Date, date2: string | Date, dateFormat?: string): compareResult.CompareResult;
+        dateInRange(date: string | Date, rangeStart: string | Date, rangeEnd: string | Date): boolean;
+        getDate(date: string | Date, dateFormat?: string): Date;
+        getNow(): Date;
+    }
+    class DateUtility {
+        private moment;
+        private time;
+        static $inject: string[];
+        constructor(moment: moment.MomentStatic, time: time.ITimeUtility);
+        month: IMonth[];
+        private baseFormat;
+        private isLeapYear(year?);
+        getFullString(month: number): string;
+        getDays(month: number, year?: number): number;
+        subtractDates(start: string | Date, end: string | Date, dateFormat?: string): IDateValue;
+        subtractDateInDays(start: string | Date, end: string | Date, dateFormat?: string): number;
+        compareDates(date1: string | Date, date2: string | Date, dateFormat?: string): compareResult.CompareResult;
+        dateInRange(date: string | Date, rangeStart: string | Date, rangeEnd: string | Date): boolean;
+        getDate(date: string | Date, dateFormat?: string): Date;
+        getNow(): Date;
+    }
+}
+declare module rl.utilities.services.jquery {
+    var moduleName: string;
+    var serviceName: string;
+    interface IJQueryUtility {
+        replaceContent(contentArea: JQuery, newContents: JQuery): void;
+    }
+}
+declare module rl.utilities.services.number {
+    var moduleName: string;
+    var serviceName: string;
+    interface INumberUtility {
+        preciseRound(num: number, decimals: number): number;
+        integerDivide(dividend: number, divisor: number): number;
+    }
+}
+declare module rl.utilities.services.parentChildBehavior {
+    var moduleName: string;
+    var serviceName: string;
+    interface IViewData<TBehavior> {
+        behavior: TBehavior;
+    }
+    interface IChild<TBehavior> {
+        viewData?: IViewData<TBehavior>;
+    }
+    interface IParentChildBehaviorService {
+        getChildBehavior<TBehavior>(child: IChild<TBehavior>): TBehavior;
+        triggerChildBehavior<TBehavior, TReturnType>(child: IChild<any>, action: {
+            (behavior: TBehavior): TReturnType;
+        }): TReturnType;
+        triggerAllChildBehaviors<TBehavior, TReturnType>(childList: IChild<TBehavior>[], action: {
+            (behavior: TBehavior): TReturnType;
+        }): TReturnType[];
+        getAllChildBehaviors<TBehavior>(childList: IChild<TBehavior>[]): TBehavior[];
+        registerChildBehavior<TBehavior>(child: IChild<TBehavior>, behavior: TBehavior): void;
+    }
+    class ParentChildBehaviorService {
+        getChildBehavior<TBehavior>(child: IChild<TBehavior>): TBehavior;
+        triggerChildBehavior<TBehavior, TReturnType>(child: IChild<TBehavior>, action: {
+            (behavior: TBehavior): TReturnType;
+        }): TReturnType;
+        triggerAllChildBehaviors<TBehavior, TReturnType>(childList: IChild<TBehavior>[], action: {
+            (behavior: TBehavior): TReturnType;
+        }): TReturnType[];
+        getAllChildBehaviors<TBehavior>(childList: IChild<TBehavior>[]): TBehavior[];
+        registerChildBehavior<TBehavior>(child: IChild<TBehavior>, behavior: TBehavior): void;
+    }
+}
+declare module rl.utilities.services.promise {
+    var moduleName: string;
+    var serviceName: string;
+    interface IPromiseUtility {
+        isPromise(promise: any): boolean;
+        isPromise(promise: ng.IPromise<any>): boolean;
+    }
+}
+declare module rl.utilities.services {
+    var moduleName: string;
+}
+declare module rl.utilities {
+    var moduleName: string;
+}
+declare module rl.utilities.filter {
+    var moduleName: string;
+    interface IFilterWithCounts extends IFilter {
+        updateOptionCounts<TItemType>(data: TItemType[]): void;
+    }
+    interface IFilter {
+        type: string;
+        filter<TItemType>(item: TItemType): boolean;
+    }
+}
+declare module rl.utilities.services.breakpoints {
+    var lg: string;
+    var md: string;
+    var sm: string;
+    var xs: string;
+}
+declare module rl.utilities.services.breakpoints {
+    var visibleBreakpointsServiceName: string;
+    interface IVisibleBreakpointService {
+        isVisible(breakpoint: string): boolean;
+    }
+    class VisibleBreakpointService implements IVisibleBreakpointService {
+        isVisible(breakpoint: string): boolean;
+    }
 }
 declare module rl.utilities.services.window {
     var moduleName: string;
@@ -176,39 +337,6 @@ declare module rl.utilities.services.breakpoints {
         private updateBreakpoint;
     }
 }
-declare module rl.utilities.services.contentProvider {
-    var moduleName: string;
-    var serviceName: string;
-    interface IContentProviderService {
-        setContent(content: JQuery): void;
-        setTranscludeContent(transcludeFunction: angular.ITranscludeFunction): void;
-        getContent(selector?: string): JQuery;
-        register(action: {
-            (newText: JQuery): void;
-        }, selector?: string): observable.IUnregisterFunction;
-    }
-    interface IContentProviderServiceFactory {
-        getInstance(): IContentProviderService;
-    }
-}
-declare module rl.utilities.services.date {
-    var dateServiceName: string;
-    interface IMonth {
-        name: string;
-        days(year?: number): number;
-    }
-    interface IDateUtility {
-        getFullString(month: number): string;
-        getDays(month: number, year?: number): number;
-    }
-    class DateUtility {
-        constructor();
-        month: IMonth[];
-        private isLeapYear(year?);
-        getFullString(month: number): string;
-        getDays(month: number, year?: number): number;
-    }
-}
 declare module rl.utilities.services.date {
     var dateTimeFormatServiceName: string;
     interface IDateFormatStrings {
@@ -220,14 +348,7 @@ declare module rl.utilities.services.date {
 }
 declare module rl.utilities.services.date {
     var moduleName: string;
-}
-declare module rl.utilities.services.number {
-    var moduleName: string;
     var serviceName: string;
-    interface INumberUtility {
-        preciseRound(num: number, decimals: number): number;
-        integerDivide(dividend: number, divisor: number): number;
-    }
 }
 declare module rl.utilities.services.fileSize {
     var factoryName: string;
@@ -266,16 +387,6 @@ declare module rl.utilities.services.string {
         replaceAll(str: string, patternToFind: string, replacementString: string): string;
     }
 }
-declare module rl.utilities.filter {
-    var moduleName: string;
-    interface IFilterWithCounts extends IFilter {
-        updateOptionCounts<TItemType>(data: TItemType[]): void;
-    }
-    interface IFilter {
-        type: string;
-        filter<TItemType>(item: TItemType): boolean;
-    }
-}
 declare module rl.utilities.services.genericSearchFilter {
     var moduleName: string;
     var factoryName: string;
@@ -298,45 +409,6 @@ declare module rl.utilities.services.genericSearchFilter {
     }
     interface IGenericSearchFilterFactory {
         getInstance(): IGenericSearchFilter;
-    }
-}
-declare module rl.utilities.services.jquery {
-    var moduleName: string;
-    var serviceName: string;
-    interface IJQueryUtility {
-        replaceContent(contentArea: JQuery, newContents: JQuery): void;
-    }
-}
-declare module rl.utilities.services.parentChildBehavior {
-    var moduleName: string;
-    var serviceName: string;
-    interface IViewData<TBehavior> {
-        behavior: TBehavior;
-    }
-    interface IChild<TBehavior> {
-        viewData?: IViewData<TBehavior>;
-    }
-    interface IParentChildBehaviorService {
-        getChildBehavior<TBehavior>(child: IChild<TBehavior>): TBehavior;
-        triggerChildBehavior<TBehavior, TReturnType>(child: IChild<any>, action: {
-            (behavior: TBehavior): TReturnType;
-        }): TReturnType;
-        triggerAllChildBehaviors<TBehavior, TReturnType>(childList: IChild<TBehavior>[], action: {
-            (behavior: TBehavior): TReturnType;
-        }): TReturnType[];
-        getAllChildBehaviors<TBehavior>(childList: IChild<TBehavior>[]): TBehavior[];
-        registerChildBehavior<TBehavior>(child: IChild<TBehavior>, behavior: TBehavior): void;
-    }
-    class ParentChildBehaviorService {
-        getChildBehavior<TBehavior>(child: IChild<TBehavior>): TBehavior;
-        triggerChildBehavior<TBehavior, TReturnType>(child: IChild<TBehavior>, action: {
-            (behavior: TBehavior): TReturnType;
-        }): TReturnType;
-        triggerAllChildBehaviors<TBehavior, TReturnType>(childList: IChild<TBehavior>[], action: {
-            (behavior: TBehavior): TReturnType;
-        }): TReturnType[];
-        getAllChildBehaviors<TBehavior>(childList: IChild<TBehavior>[]): TBehavior[];
-        registerChildBehavior<TBehavior>(child: IChild<TBehavior>, behavior: TBehavior): void;
     }
 }
 declare module rl.utilities.services.test {
@@ -366,40 +438,4 @@ declare module rl.utilities.services.test {
         flush<TDataType>(service: any): void;
     }
     var mock: IMock;
-}
-declare module rl.utilities.services.time {
-    var moduleName: string;
-    var serviceName: string;
-    interface ITimeUtility {
-        millisecondsToSeconds(milliseconds: number): number;
-        millisecondsToMinutes(milliseconds: number): number;
-        millisecondsToHours(milliseconds: number): number;
-        millisecondsToDays(milliseconds: number): number;
-    }
-    class TimeUtility {
-        millisecondsToSeconds(milliseconds: number): number;
-        millisecondsToMinutes(milliseconds: number): number;
-        millisecondsToHours(milliseconds: number): number;
-        millisecondsToDays(milliseconds: number): number;
-    }
-}
-declare module rl.utilities.services.promise {
-    var moduleName: string;
-    var serviceName: string;
-    interface IPromiseUtility {
-        isPromise(promise: any): boolean;
-        isPromise(promise: ng.IPromise<any>): boolean;
-    }
-}
-declare module rl.utilities.behaviors {
-    var moduleName: string;
-}
-declare module rl.utilities.filters {
-    var moduleName: string;
-}
-declare module rl.utilities.services {
-    var moduleName: string;
-}
-declare module rl.utilities {
-    var moduleName: string;
 }
