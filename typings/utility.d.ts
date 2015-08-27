@@ -1,8 +1,50 @@
-declare module rl.utilities.behaviors.stopEventPropogation {
+declare module rl.utilities.services.array {
     var moduleName: string;
-    var directiveName: string;
-    interface IStopEventPropagationAttrs extends ng.IAttributes {
-        rlStopEventPropagation: string;
+    var serviceName: string;
+    interface IArrayUtility {
+        findIndexOf<TDataType>(array: TDataType[], predicate: {
+            (item: TDataType): boolean;
+        }): number;
+        remove<TDataType>(array: TDataType[], item: {
+            (obj: TDataType): boolean;
+        }): TDataType;
+        remove<TDataType>(array: TDataType[], item: TDataType): TDataType;
+        replace<TDataType>(array: TDataType[], oldItem: TDataType, newItem: TDataType): void;
+        sum<TDataType>(array: TDataType[], transform: {
+            (item: TDataType): number;
+        }): number;
+        sum(array: number[]): number;
+        toDictionary<TDataType>(array: TDataType[], keySelector: {
+            (item: TDataType): string;
+        }): TDataType[];
+        toDictionary<TDataType>(array: TDataType[], keySelector: {
+            (item: TDataType): number;
+        }): TDataType[];
+    }
+}
+declare module rl.utilities.services.object {
+    var moduleName: string;
+    var serviceName: string;
+    interface IObjectUtility {
+        isNullOrEmpty(object: any[]): boolean;
+        isNullOrEmpty(object: number): boolean;
+        isNullOrEmpty(object: string): boolean;
+        isNullOrEmpty(object: any): boolean;
+        isNullOrWhitespace(object: any[]): boolean;
+        isNullOrWhitespace(object: number): boolean;
+        isNullOrWhitespace(object: string): boolean;
+        isNullOrWhitespace(object: any): boolean;
+        areEqual(obj1: any, obj2: any): boolean;
+        toString(object: any): string;
+        valueOrDefault(value: any, defaultValue: any): any;
+    }
+}
+declare module rl.utilities.filters.isEmpty {
+    var moduleName: string;
+    var serviceName: string;
+    var filterName: string;
+    interface IIsEmptyFilter {
+        (input: any, trueWhenEmpty?: boolean): boolean;
     }
 }
 declare module rl.utilities.services.autosaveAction {
@@ -30,28 +72,13 @@ declare module rl.utilities.services.autosave {
         }): IAutosaveService;
     }
 }
-declare module rl.utilities.services.array {
+declare module rl.utilities.filters.truncate {
     var moduleName: string;
     var serviceName: string;
-    interface IArrayUtility {
-        findIndexOf<TDataType>(array: TDataType[], predicate: {
-            (item: TDataType): boolean;
-        }): number;
-        remove<TDataType>(array: TDataType[], item: {
-            (obj: TDataType): boolean;
-        }): TDataType;
-        remove<TDataType>(array: TDataType[], item: TDataType): TDataType;
-        replace<TDataType>(array: TDataType[], oldItem: TDataType, newItem: TDataType): void;
-        sum<TDataType>(array: TDataType[], transform: {
-            (item: TDataType): number;
-        }): number;
-        sum(array: number[]): number;
-        toDictionary<TDataType>(array: TDataType[], keySelector: {
-            (item: TDataType): string;
-        }): TDataType[];
-        toDictionary<TDataType>(array: TDataType[], keySelector: {
-            (item: TDataType): number;
-        }): TDataType[];
+    var filterName: string;
+    interface ITruncateFilter {
+        (input?: string, truncateTo?: number, includeEllipses?: boolean): string;
+        (input?: number, truncateTo?: number, includeEllipses?: boolean): string;
     }
 }
 declare module rl.utilities.services.boolean {
@@ -142,6 +169,21 @@ declare module rl.utilities.services.breakpoints {
         private updateBreakpoint;
     }
 }
+declare module rl.utilities.services.contentProvider {
+    var moduleName: string;
+    var serviceName: string;
+    interface IContentProviderService {
+        setContent(content: JQuery): void;
+        setTranscludeContent(transcludeFunction: angular.ITranscludeFunction): void;
+        getContent(selector?: string): JQuery;
+        register(action: {
+            (newText: JQuery): void;
+        }, selector?: string): observable.IUnregisterFunction;
+    }
+    interface IContentProviderServiceFactory {
+        getInstance(): IContentProviderService;
+    }
+}
 declare module rl.utilities.services.time {
     var moduleName: string;
     var serviceName: string;
@@ -224,21 +266,6 @@ declare module rl.utilities.services.date {
     var moduleName: string;
     var serviceName: string;
 }
-declare module rl.utilities.services.contentProvider {
-    var moduleName: string;
-    var serviceName: string;
-    interface IContentProviderService {
-        setContent(content: JQuery): void;
-        setTranscludeContent(transcludeFunction: angular.ITranscludeFunction): void;
-        getContent(selector?: string): JQuery;
-        register(action: {
-            (newText: JQuery): void;
-        }, selector?: string): observable.IUnregisterFunction;
-    }
-    interface IContentProviderServiceFactory {
-        getInstance(): IContentProviderService;
-    }
-}
 declare module rl.utilities.services.number {
     var moduleName: string;
     var serviceName: string;
@@ -267,23 +294,6 @@ declare module rl.utilities.services.fileSize {
 }
 declare module rl.utilities.services.fileSize {
     var moduleName: string;
-}
-declare module rl.utilities.services.object {
-    var moduleName: string;
-    var serviceName: string;
-    interface IObjectUtility {
-        isNullOrEmpty(object: any[]): boolean;
-        isNullOrEmpty(object: number): boolean;
-        isNullOrEmpty(object: string): boolean;
-        isNullOrEmpty(object: any): boolean;
-        isNullOrWhitespace(object: any[]): boolean;
-        isNullOrWhitespace(object: number): boolean;
-        isNullOrWhitespace(object: string): boolean;
-        isNullOrWhitespace(object: any): boolean;
-        areEqual(obj1: any, obj2: any): boolean;
-        toString(object: any): string;
-        valueOrDefault(value: any, defaultValue: any): any;
-    }
 }
 declare module rl.utilities.services.string {
     var moduleName: string;
@@ -340,6 +350,44 @@ declare module rl.utilities.services.jquery {
     var serviceName: string;
     interface IJQueryUtility {
         replaceContent(contentArea: JQuery, newContents: JQuery): void;
+    }
+}
+declare module rl.utilities.services.notification {
+    var moduleName: string;
+    var serviceName: string;
+    interface INotifier {
+        info(message: string): void;
+        warning(message: string): void;
+        error(message: string): void;
+        success(message: string): void;
+    }
+    interface INotificationService {
+        info(message: string): void;
+        warning(message: string): void;
+        error(message: string): void;
+        success(message: string): void;
+    }
+    class NotificationService implements INotificationService {
+        private notifier;
+        constructor(notifier: INotifier);
+        info(message: string): void;
+        warning(message: string): void;
+        error(message: string): void;
+        success(message: string): void;
+    }
+    interface INotificationServiceProvider extends ng.IServiceProvider {
+        setNotifier(notifier: INotifier): void;
+        $get(): INotificationService;
+    }
+    function notificationServiceProvider(): INotificationServiceProvider;
+}
+declare module rl.utilities.services.notification {
+    class BaseNotifier implements INotifier {
+        info(message: string): void;
+        warning(message: string): void;
+        error(message: string): void;
+        success(message: string): void;
+        private notify(message);
     }
 }
 declare module rl.utilities.services.parentChildBehavior {
@@ -418,7 +466,7 @@ declare module rl.utilities.services.validation {
             (): boolean;
         } | boolean;
         validate(): boolean;
-        showErrors(): void;
+        errorMessage: string;
     }
     interface IUnregisterFunction {
         (): void;
@@ -428,8 +476,10 @@ declare module rl.utilities.services.validation {
         registerValidationHandler(handler: IValidationHandler): IUnregisterFunction;
     }
     class ValidationService implements IValidationService {
+        private notification;
         private validationHandlers;
         private nextKey;
+        constructor(notification: services.notification.INotificationService);
         validate(): boolean;
         registerValidationHandler(handler: IValidationHandler): IUnregisterFunction;
         private unregister(key);
@@ -437,23 +487,13 @@ declare module rl.utilities.services.validation {
     interface IValidationServiceFactory {
         getInstance(): IValidationService;
     }
-    function validationServiceFactory(): IValidationServiceFactory;
+    function validationServiceFactory(notification: services.notification.INotificationService): IValidationServiceFactory;
 }
-declare module rl.utilities.filters.isEmpty {
+declare module rl.utilities.behaviors.stopEventPropogation {
     var moduleName: string;
-    var serviceName: string;
-    var filterName: string;
-    interface IIsEmptyFilter {
-        (input: any, trueWhenEmpty?: boolean): boolean;
-    }
-}
-declare module rl.utilities.filters.truncate {
-    var moduleName: string;
-    var serviceName: string;
-    var filterName: string;
-    interface ITruncateFilter {
-        (input?: string, truncateTo?: number, includeEllipses?: boolean): string;
-        (input?: number, truncateTo?: number, includeEllipses?: boolean): string;
+    var directiveName: string;
+    interface IStopEventPropagationAttrs extends ng.IAttributes {
+        rlStopEventPropagation: string;
     }
 }
 declare module rl.utilities.behaviors {
