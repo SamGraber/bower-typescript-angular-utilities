@@ -1,3 +1,10 @@
+declare module rl.utilities.behaviors.stopEventPropogation {
+    var moduleName: string;
+    var directiveName: string;
+    interface IStopEventPropagationAttrs extends ng.IAttributes {
+        rlStopEventPropagation: string;
+    }
+}
 declare module rl.utilities.services.array {
     var moduleName: string;
     var serviceName: string;
@@ -39,14 +46,6 @@ declare module rl.utilities.services.object {
         valueOrDefault(value: any, defaultValue: any): any;
     }
 }
-declare module rl.utilities.filters.isEmpty {
-    var moduleName: string;
-    var serviceName: string;
-    var filterName: string;
-    interface IIsEmptyFilter {
-        (input: any, trueWhenEmpty?: boolean): boolean;
-    }
-}
 declare module rl.utilities.filters.truncate {
     var moduleName: string;
     var serviceName: string;
@@ -56,11 +55,12 @@ declare module rl.utilities.filters.truncate {
         (input?: number, truncateTo?: number, includeEllipses?: boolean): string;
     }
 }
-declare module rl.utilities.behaviors.stopEventPropogation {
+declare module rl.utilities.filters.isEmpty {
     var moduleName: string;
-    var directiveName: string;
-    interface IStopEventPropagationAttrs extends ng.IAttributes {
-        rlStopEventPropagation: string;
+    var serviceName: string;
+    var filterName: string;
+    interface IIsEmptyFilter {
+        (input: any, trueWhenEmpty?: boolean): boolean;
     }
 }
 declare module rl.utilities.services.autosaveAction {
@@ -95,6 +95,21 @@ declare module rl.utilities.services.boolean {
         toBool(object: any): boolean;
     }
 }
+declare module rl.utilities.services.breakpoints {
+    var lg: string;
+    var md: string;
+    var sm: string;
+    var xs: string;
+}
+declare module rl.utilities.services.breakpoints {
+    var visibleBreakpointsServiceName: string;
+    interface IVisibleBreakpointService {
+        isVisible(breakpoint: string): boolean;
+    }
+    class VisibleBreakpointService implements IVisibleBreakpointService {
+        isVisible(breakpoint: string): boolean;
+    }
+}
 declare module rl.utilities.services.observable {
     var moduleName: string;
     var factoryName: string;
@@ -125,36 +140,6 @@ declare module rl.utilities.services.observable {
         getInstance(): IObservableService;
     }
     function observableServiceFactory(): IObservableServiceFactory;
-}
-declare module rl.utilities.services.contentProvider {
-    var moduleName: string;
-    var serviceName: string;
-    interface IContentProviderService {
-        setContent(content: JQuery): void;
-        setTranscludeContent(transcludeFunction: angular.ITranscludeFunction): void;
-        getContent(selector?: string): JQuery;
-        register(action: {
-            (newText: JQuery): void;
-        }, selector?: string): observable.IUnregisterFunction;
-    }
-    interface IContentProviderServiceFactory {
-        getInstance(): IContentProviderService;
-    }
-}
-declare module rl.utilities.services.breakpoints {
-    var lg: string;
-    var md: string;
-    var sm: string;
-    var xs: string;
-}
-declare module rl.utilities.services.breakpoints {
-    var visibleBreakpointsServiceName: string;
-    interface IVisibleBreakpointService {
-        isVisible(breakpoint: string): boolean;
-    }
-    class VisibleBreakpointService implements IVisibleBreakpointService {
-        isVisible(breakpoint: string): boolean;
-    }
 }
 declare module rl.utilities.services.window {
     var moduleName: string;
@@ -189,6 +174,21 @@ declare module rl.utilities.services.breakpoints {
             (breakpoint: string): void;
         }): __observable.IUnregisterFunction;
         private updateBreakpoint;
+    }
+}
+declare module rl.utilities.services.contentProvider {
+    var moduleName: string;
+    var serviceName: string;
+    interface IContentProviderService {
+        setContent(content: JQuery): void;
+        setTranscludeContent(transcludeFunction: angular.ITranscludeFunction): void;
+        getContent(selector?: string): JQuery;
+        register(action: {
+            (newText: JQuery): void;
+        }, selector?: string): observable.IUnregisterFunction;
+    }
+    interface IContentProviderServiceFactory {
+        getInstance(): IContentProviderService;
     }
 }
 declare module rl.utilities.services.time {
@@ -437,6 +437,41 @@ declare module rl.utilities.services.promise {
         isPromise(promise: ng.IPromise<any>): boolean;
     }
 }
+declare module rl.utilities.services.validation {
+    var moduleName: string;
+    var factoryName: string;
+    interface IValidationHandler {
+        isActive?: {
+            (): boolean;
+        } | boolean;
+        validate(): boolean;
+        errorMessage: string | {
+            (): string;
+        };
+    }
+    interface IUnregisterFunction {
+        (): void;
+    }
+    interface IValidationService {
+        validate(): boolean;
+        registerValidationHandler(handler: IValidationHandler): IUnregisterFunction;
+        notifyAsError: boolean;
+    }
+    class ValidationService implements IValidationService {
+        private notification;
+        private validationHandlers;
+        private nextKey;
+        notifyAsError: boolean;
+        constructor(notification: services.notification.INotificationService);
+        validate(): boolean;
+        registerValidationHandler(handler: IValidationHandler): IUnregisterFunction;
+        private unregister(key);
+    }
+    interface IValidationServiceFactory {
+        getInstance(): IValidationService;
+    }
+    function validationServiceFactory(notification: services.notification.INotificationService): IValidationServiceFactory;
+}
 declare module rl.utilities.services.test {
     interface IControllerResult<TControllerType> {
         controller: TControllerType;
@@ -464,37 +499,6 @@ declare module rl.utilities.services.test {
         flush<TDataType>(service: any): void;
     }
     var mock: IMock;
-}
-declare module rl.utilities.services.validation {
-    var moduleName: string;
-    var factoryName: string;
-    interface IValidationHandler {
-        isActive?: {
-            (): boolean;
-        } | boolean;
-        validate(): boolean;
-        errorMessage: string;
-    }
-    interface IUnregisterFunction {
-        (): void;
-    }
-    interface IValidationService {
-        validate(): boolean;
-        registerValidationHandler(handler: IValidationHandler): IUnregisterFunction;
-    }
-    class ValidationService implements IValidationService {
-        private notification;
-        private validationHandlers;
-        private nextKey;
-        constructor(notification: services.notification.INotificationService);
-        validate(): boolean;
-        registerValidationHandler(handler: IValidationHandler): IUnregisterFunction;
-        private unregister(key);
-    }
-    interface IValidationServiceFactory {
-        getInstance(): IValidationService;
-    }
-    function validationServiceFactory(notification: services.notification.INotificationService): IValidationServiceFactory;
 }
 declare module rl.utilities.behaviors {
     var moduleName: string;

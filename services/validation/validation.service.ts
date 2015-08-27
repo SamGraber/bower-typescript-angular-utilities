@@ -12,7 +12,7 @@ module rl.utilities.services.validation {
 	export interface IValidationHandler {
 		isActive?: {(): boolean} | boolean;
 		validate(): boolean;
-		errorMessage: string;
+		errorMessage: string | {(): string};
 	}
 
 	export interface IUnregisterFunction {
@@ -22,11 +22,13 @@ module rl.utilities.services.validation {
 	export interface IValidationService {
 		validate(): boolean;
 		registerValidationHandler(handler: IValidationHandler): IUnregisterFunction;
+		notifyAsError: boolean;
 	}
 
 	export class ValidationService implements IValidationService {
 		private validationHandlers: { [index: number]: IValidationHandler } = {};
 		private nextKey: number = 0;
+		notifyAsError: boolean = false;
 
 		constructor(private notification: services.notification.INotificationService) {}
 
@@ -40,7 +42,17 @@ module rl.utilities.services.validation {
 
 				if (isActive && !handler.validate()) {
 					isValid = false;
-					this.notification.error(handler.errorMessage);
+
+					var error: string = _.isFunction(handler.errorMessage)
+										? (<{(): string}>handler.errorMessage)()
+										: <string>handler.errorMessage;
+
+					if (this.notifyAsError) {
+						this.notification.error(error);
+					} else {
+						this.notification.warning(error);
+					}
+
 					return false;
 				}
 			});
