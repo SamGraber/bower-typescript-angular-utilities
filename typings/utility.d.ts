@@ -47,6 +47,22 @@ declare module rl.utilities.filters.isEmpty {
         (input: any, trueWhenEmpty?: boolean): boolean;
     }
 }
+declare module rl.utilities.filters.truncate {
+    var moduleName: string;
+    var serviceName: string;
+    var filterName: string;
+    interface ITruncateFilter {
+        (input?: string, truncateTo?: number, includeEllipses?: boolean): string;
+        (input?: number, truncateTo?: number, includeEllipses?: boolean): string;
+    }
+}
+declare module rl.utilities.behaviors.stopEventPropogation {
+    var moduleName: string;
+    var directiveName: string;
+    interface IStopEventPropagationAttrs extends ng.IAttributes {
+        rlStopEventPropagation: string;
+    }
+}
 declare module rl.utilities.services.autosaveAction {
     var moduleName: string;
     var serviceName: string;
@@ -72,35 +88,11 @@ declare module rl.utilities.services.autosave {
         }): IAutosaveService;
     }
 }
-declare module rl.utilities.filters.truncate {
-    var moduleName: string;
-    var serviceName: string;
-    var filterName: string;
-    interface ITruncateFilter {
-        (input?: string, truncateTo?: number, includeEllipses?: boolean): string;
-        (input?: number, truncateTo?: number, includeEllipses?: boolean): string;
-    }
-}
 declare module rl.utilities.services.boolean {
     var moduleName: string;
     var serviceName: string;
     interface IBooleanUtility {
         toBool(object: any): boolean;
-    }
-}
-declare module rl.utilities.services.breakpoints {
-    var lg: string;
-    var md: string;
-    var sm: string;
-    var xs: string;
-}
-declare module rl.utilities.services.breakpoints {
-    var visibleBreakpointsServiceName: string;
-    interface IVisibleBreakpointService {
-        isVisible(breakpoint: string): boolean;
-    }
-    class VisibleBreakpointService implements IVisibleBreakpointService {
-        isVisible(breakpoint: string): boolean;
     }
 }
 declare module rl.utilities.services.observable {
@@ -133,6 +125,36 @@ declare module rl.utilities.services.observable {
         getInstance(): IObservableService;
     }
     function observableServiceFactory(): IObservableServiceFactory;
+}
+declare module rl.utilities.services.contentProvider {
+    var moduleName: string;
+    var serviceName: string;
+    interface IContentProviderService {
+        setContent(content: JQuery): void;
+        setTranscludeContent(transcludeFunction: angular.ITranscludeFunction): void;
+        getContent(selector?: string): JQuery;
+        register(action: {
+            (newText: JQuery): void;
+        }, selector?: string): observable.IUnregisterFunction;
+    }
+    interface IContentProviderServiceFactory {
+        getInstance(): IContentProviderService;
+    }
+}
+declare module rl.utilities.services.breakpoints {
+    var lg: string;
+    var md: string;
+    var sm: string;
+    var xs: string;
+}
+declare module rl.utilities.services.breakpoints {
+    var visibleBreakpointsServiceName: string;
+    interface IVisibleBreakpointService {
+        isVisible(breakpoint: string): boolean;
+    }
+    class VisibleBreakpointService implements IVisibleBreakpointService {
+        isVisible(breakpoint: string): boolean;
+    }
 }
 declare module rl.utilities.services.window {
     var moduleName: string;
@@ -167,21 +189,6 @@ declare module rl.utilities.services.breakpoints {
             (breakpoint: string): void;
         }): __observable.IUnregisterFunction;
         private updateBreakpoint;
-    }
-}
-declare module rl.utilities.services.contentProvider {
-    var moduleName: string;
-    var serviceName: string;
-    interface IContentProviderService {
-        setContent(content: JQuery): void;
-        setTranscludeContent(transcludeFunction: angular.ITranscludeFunction): void;
-        getContent(selector?: string): JQuery;
-        register(action: {
-            (newText: JQuery): void;
-        }, selector?: string): observable.IUnregisterFunction;
-    }
-    interface IContentProviderServiceFactory {
-        getInstance(): IContentProviderService;
     }
 }
 declare module rl.utilities.services.time {
@@ -488,13 +495,6 @@ declare module rl.utilities.services.validation {
         getInstance(): IValidationService;
     }
     function validationServiceFactory(notification: services.notification.INotificationService): IValidationServiceFactory;
-}
-declare module rl.utilities.behaviors.stopEventPropogation {
-    var moduleName: string;
-    var directiveName: string;
-    interface IStopEventPropagationAttrs extends ng.IAttributes {
-        rlStopEventPropagation: string;
-    }
 }
 declare module rl.utilities.behaviors {
     var moduleName: string;
