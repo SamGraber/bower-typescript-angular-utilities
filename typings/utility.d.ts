@@ -5,7 +5,64 @@ declare module rl.utilities.behaviors.stopEventPropogation {
         rlStopEventPropagation: string;
     }
 }
-<<<<<<< HEAD
+declare module rl.utilities.services.array {
+    var moduleName: string;
+    var serviceName: string;
+    interface IArrayUtility {
+        findIndexOf<TDataType>(array: TDataType[], predicate: {
+            (item: TDataType): boolean;
+        }): number;
+        remove<TDataType>(array: TDataType[], item: {
+            (obj: TDataType): boolean;
+        }): TDataType;
+        remove<TDataType>(array: TDataType[], item: TDataType): TDataType;
+        replace<TDataType>(array: TDataType[], oldItem: TDataType, newItem: TDataType): void;
+        sum<TDataType>(array: TDataType[], transform: {
+            (item: TDataType): number;
+        }): number;
+        sum(array: number[]): number;
+        toDictionary<TDataType>(array: TDataType[], keySelector: {
+            (item: TDataType): string;
+        }): TDataType[];
+        toDictionary<TDataType>(array: TDataType[], keySelector: {
+            (item: TDataType): number;
+        }): TDataType[];
+    }
+}
+declare module rl.utilities.services.object {
+    var moduleName: string;
+    var serviceName: string;
+    interface IObjectUtility {
+        isNullOrEmpty(object: any[]): boolean;
+        isNullOrEmpty(object: number): boolean;
+        isNullOrEmpty(object: string): boolean;
+        isNullOrEmpty(object: any): boolean;
+        isNullOrWhitespace(object: any[]): boolean;
+        isNullOrWhitespace(object: number): boolean;
+        isNullOrWhitespace(object: string): boolean;
+        isNullOrWhitespace(object: any): boolean;
+        areEqual(obj1: any, obj2: any): boolean;
+        toString(object: any): string;
+        valueOrDefault(value: any, defaultValue: any): any;
+    }
+}
+declare module rl.utilities.filters.truncate {
+    var moduleName: string;
+    var serviceName: string;
+    var filterName: string;
+    interface ITruncateFilter {
+        (input?: string, truncateTo?: number, includeEllipses?: boolean): string;
+        (input?: number, truncateTo?: number, includeEllipses?: boolean): string;
+    }
+}
+declare module rl.utilities.filters.isEmpty {
+    var moduleName: string;
+    var serviceName: string;
+    var filterName: string;
+    interface IIsEmptyFilter {
+        (input: any, trueWhenEmpty?: boolean): boolean;
+    }
+}
 declare module rl.utilities.services.autosaveAction {
     var moduleName: string;
     var serviceName: string;
@@ -31,93 +88,11 @@ declare module rl.utilities.services.autosave {
         }): IAutosaveService;
     }
 }
-=======
->>>>>>> master
-declare module rl.utilities.services.array {
-    var moduleName: string;
-    var serviceName: string;
-    interface IArrayUtility {
-        findIndexOf<TDataType>(array: TDataType[], predicate: {
-            (item: TDataType): boolean;
-        }): number;
-        remove<TDataType>(array: TDataType[], item: {
-            (obj: TDataType): boolean;
-        }): TDataType;
-        remove<TDataType>(array: TDataType[], item: TDataType): TDataType;
-        replace<TDataType>(array: TDataType[], oldItem: TDataType, newItem: TDataType): void;
-        sum<TDataType>(array: TDataType[], transform: {
-            (item: TDataType): number;
-        }): number;
-        sum(array: number[]): number;
-        toDictionary<TDataType>(array: TDataType[], keySelector: {
-            (item: TDataType): string;
-        }): TDataType[];
-        toDictionary<TDataType>(array: TDataType[], keySelector: {
-            (item: TDataType): number;
-        }): TDataType[];
-    }
-}
-<<<<<<< HEAD
 declare module rl.utilities.services.boolean {
-=======
-declare module rl.utilities.services.object {
-    var moduleName: string;
-    var serviceName: string;
-    interface IObjectUtility {
-        isNullOrEmpty(object: any[]): boolean;
-        isNullOrEmpty(object: number): boolean;
-        isNullOrEmpty(object: string): boolean;
-        isNullOrEmpty(object: any): boolean;
-        isNullOrWhitespace(object: any[]): boolean;
-        isNullOrWhitespace(object: number): boolean;
-        isNullOrWhitespace(object: string): boolean;
-        isNullOrWhitespace(object: any): boolean;
-        areEqual(obj1: any, obj2: any): boolean;
-        toString(object: any): string;
-        valueOrDefault(value: any, defaultValue: any): any;
-    }
-}
-declare module rl.utilities.filters.truncate {
->>>>>>> master
     var moduleName: string;
     var serviceName: string;
     interface IBooleanUtility {
         toBool(object: any): boolean;
-    }
-}
-<<<<<<< HEAD
-declare module rl.utilities.services.breakpoints {
-    var lg: string;
-    var md: string;
-    var sm: string;
-    var xs: string;
-=======
-declare module rl.utilities.services.autosaveAction {
-    var moduleName: string;
-    var serviceName: string;
-    interface IAutosaveActionService {
-        trigger(promise: ng.IPromise<any>): void;
-        saving: boolean;
-        complete: boolean;
-        successful: boolean;
-    }
->>>>>>> master
-}
-declare module rl.utilities.services.breakpoints {
-    var visibleBreakpointsServiceName: string;
-    interface IVisibleBreakpointService {
-        isVisible(breakpoint: string): boolean;
-    }
-    class VisibleBreakpointService implements IVisibleBreakpointService {
-        isVisible(breakpoint: string): boolean;
-    }
-}
-declare module rl.utilities.filters.isEmpty {
-    var moduleName: string;
-    var serviceName: string;
-    var filterName: string;
-    interface IIsEmptyFilter {
-        (input: any, trueWhenEmpty?: boolean): boolean;
     }
 }
 declare module rl.utilities.services.observable {
@@ -150,41 +125,6 @@ declare module rl.utilities.services.observable {
         getInstance(): IObservableService;
     }
     function observableServiceFactory(): IObservableServiceFactory;
-}
-declare module rl.utilities.services.window {
-    var moduleName: string;
-    var serviceName: string;
-    interface IWindowService {
-        resize(callback: {
-            (event: JQueryEventObject): any;
-        }): void;
-    }
-}
-declare module rl.utilities.services.breakpoints {
-    import __window = rl.utilities.services.window;
-    import __observable = rl.utilities.services.observable;
-    var moduleName: string;
-    var serviceName: string;
-    interface IBreakpointService {
-        currentBreakpoint: string;
-        isBreakpoint(breakpoint: string): boolean;
-        register(action: {
-            (breakpoint: string): void;
-        }): __observable.IUnregisterFunction;
-    }
-    class BreakpointService implements IBreakpointService {
-        private visibleBreakpoints;
-        static $inject: string[];
-        constructor(visibleBreakpoints: IVisibleBreakpointService, resizeDebounceMilliseconds: number, windowService: __window.IWindowService, observableFactory: __observable.IObservableServiceFactory);
-        private observable;
-        currentBreakpoint: string;
-        private getBreakpoint();
-        isBreakpoint(breakpoint: string): boolean;
-        register(action: {
-            (breakpoint: string): void;
-        }): __observable.IUnregisterFunction;
-        private updateBreakpoint;
-    }
 }
 declare module rl.utilities.services.contentProvider {
     var moduleName: string;
@@ -312,23 +252,6 @@ declare module rl.utilities.services.fileSize {
 declare module rl.utilities.services.fileSize {
     var moduleName: string;
 }
-declare module rl.utilities.services.object {
-    var moduleName: string;
-    var serviceName: string;
-    interface IObjectUtility {
-        isNullOrEmpty(object: any[]): boolean;
-        isNullOrEmpty(object: number): boolean;
-        isNullOrEmpty(object: string): boolean;
-        isNullOrEmpty(object: any): boolean;
-        isNullOrWhitespace(object: any[]): boolean;
-        isNullOrWhitespace(object: number): boolean;
-        isNullOrWhitespace(object: string): boolean;
-        isNullOrWhitespace(object: any): boolean;
-        areEqual(obj1: any, obj2: any): boolean;
-        toString(object: any): string;
-        valueOrDefault(value: any, defaultValue: any): any;
-    }
-}
 declare module rl.utilities.services.string {
     var moduleName: string;
     var serviceName: string;
@@ -386,8 +309,6 @@ declare module rl.utilities.services.jquery {
         replaceContent(contentArea: JQuery, newContents: JQuery): void;
     }
 }
-<<<<<<< HEAD
-=======
 declare module rl.utilities.services.notification {
     var moduleName: string;
     var serviceName: string;
@@ -426,7 +347,6 @@ declare module rl.utilities.services.notification {
         private notify(message);
     }
 }
->>>>>>> master
 declare module rl.utilities.services.parentChildBehavior {
     var moduleName: string;
     var serviceName: string;
@@ -495,24 +415,6 @@ declare module rl.utilities.services.test {
     }
     var mock: IMock;
 }
-<<<<<<< HEAD
-declare module rl.utilities.filters.isEmpty {
-    var moduleName: string;
-    var serviceName: string;
-    var filterName: string;
-    interface IIsEmptyFilter {
-        (input: any, trueWhenEmpty?: boolean): boolean;
-    }
-}
-declare module rl.utilities.filters.truncate {
-    var moduleName: string;
-    var serviceName: string;
-    var filterName: string;
-    interface ITruncateFilter {
-        (input?: string, truncateTo?: number, includeEllipses?: boolean): string;
-        (input?: number, truncateTo?: number, includeEllipses?: boolean): string;
-    }
-=======
 declare module rl.utilities.services.validation {
     var moduleName: string;
     var factoryName: string;
@@ -547,7 +449,6 @@ declare module rl.utilities.services.validation {
         getInstance(): IValidationService;
     }
     function validationServiceFactory(notification: services.notification.INotificationService): IValidationServiceFactory;
->>>>>>> master
 }
 declare module rl.utilities.behaviors {
     var moduleName: string;
