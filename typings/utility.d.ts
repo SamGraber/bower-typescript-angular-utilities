@@ -55,14 +55,6 @@ declare module rl.utilities.filters.truncate {
         (input?: number, truncateTo?: number, includeEllipses?: boolean): string;
     }
 }
-declare module rl.utilities.filters.isEmpty {
-    var moduleName: string;
-    var serviceName: string;
-    var filterName: string;
-    interface IIsEmptyFilter {
-        (input: any, trueWhenEmpty?: boolean): boolean;
-    }
-}
 declare module rl.utilities.services.autosaveAction {
     var moduleName: string;
     var serviceName: string;
@@ -95,19 +87,12 @@ declare module rl.utilities.services.boolean {
         toBool(object: any): boolean;
     }
 }
-declare module rl.utilities.services.breakpoints {
-    var lg: string;
-    var md: string;
-    var sm: string;
-    var xs: string;
-}
-declare module rl.utilities.services.breakpoints {
-    var visibleBreakpointsServiceName: string;
-    interface IVisibleBreakpointService {
-        isVisible(breakpoint: string): boolean;
-    }
-    class VisibleBreakpointService implements IVisibleBreakpointService {
-        isVisible(breakpoint: string): boolean;
+declare module rl.utilities.filters.isEmpty {
+    var moduleName: string;
+    var serviceName: string;
+    var filterName: string;
+    interface IIsEmptyFilter {
+        (input: any, trueWhenEmpty?: boolean): boolean;
     }
 }
 declare module rl.utilities.services.observable {
@@ -140,41 +125,6 @@ declare module rl.utilities.services.observable {
         getInstance(): IObservableService;
     }
     function observableServiceFactory(): IObservableServiceFactory;
-}
-declare module rl.utilities.services.window {
-    var moduleName: string;
-    var serviceName: string;
-    interface IWindowService {
-        resize(callback: {
-            (event: JQueryEventObject): any;
-        }): void;
-    }
-}
-declare module rl.utilities.services.breakpoints {
-    import __window = rl.utilities.services.window;
-    import __observable = rl.utilities.services.observable;
-    var moduleName: string;
-    var serviceName: string;
-    interface IBreakpointService {
-        currentBreakpoint: string;
-        isBreakpoint(breakpoint: string): boolean;
-        register(action: {
-            (breakpoint: string): void;
-        }): __observable.IUnregisterFunction;
-    }
-    class BreakpointService implements IBreakpointService {
-        private visibleBreakpoints;
-        static $inject: string[];
-        constructor(visibleBreakpoints: IVisibleBreakpointService, resizeDebounceMilliseconds: number, windowService: __window.IWindowService, observableFactory: __observable.IObservableServiceFactory);
-        private observable;
-        currentBreakpoint: string;
-        private getBreakpoint();
-        isBreakpoint(breakpoint: string): boolean;
-        register(action: {
-            (breakpoint: string): void;
-        }): __observable.IUnregisterFunction;
-        private updateBreakpoint;
-    }
 }
 declare module rl.utilities.services.contentProvider {
     var moduleName: string;
@@ -437,6 +387,34 @@ declare module rl.utilities.services.promise {
         isPromise(promise: ng.IPromise<any>): boolean;
     }
 }
+declare module rl.utilities.services.test {
+    interface IControllerResult<TControllerType> {
+        controller: TControllerType;
+        scope: angular.IScope;
+    }
+    interface IDirectiveResult {
+        directive: angular.IDirective;
+        scope: angular.IScope;
+    }
+    interface IAngularFixture {
+        inject: (...serviceNames: string[]) => any;
+        mock: (mocks: any) => void;
+        controller<TControllerType>(controllerName: string, scope?: any, locals?: any): IControllerResult<TControllerType>;
+        directive: (dom: string) => IDirectiveResult;
+    }
+    var angularFixture: IAngularFixture;
+}
+declare module rl.utilities.services.test {
+    interface IMock {
+        service(service?: any): any;
+        promise<TDataType>(service: any, methodName: string, data?: TDataType, successful?: boolean): void;
+        promiseWithCallback<TDataType>(service: any, methodName: string, callback: {
+            (...params: any[]): TDataType;
+        }, successful?: boolean): void;
+        flush<TDataType>(service: any): void;
+    }
+    var mock: IMock;
+}
 declare module rl.utilities.services.validation {
     var moduleName: string;
     var factoryName: string;
@@ -471,34 +449,6 @@ declare module rl.utilities.services.validation {
         getInstance(): IValidationService;
     }
     function validationServiceFactory(notification: services.notification.INotificationService): IValidationServiceFactory;
-}
-declare module rl.utilities.services.test {
-    interface IControllerResult<TControllerType> {
-        controller: TControllerType;
-        scope: angular.IScope;
-    }
-    interface IDirectiveResult {
-        directive: angular.IDirective;
-        scope: angular.IScope;
-    }
-    interface IAngularFixture {
-        inject: (...serviceNames: string[]) => any;
-        mock: (mocks: any) => void;
-        controller<TControllerType>(controllerName: string, scope?: any, locals?: any): IControllerResult<TControllerType>;
-        directive: (dom: string) => IDirectiveResult;
-    }
-    var angularFixture: IAngularFixture;
-}
-declare module rl.utilities.services.test {
-    interface IMock {
-        service(service?: any): any;
-        promise<TDataType>(service: any, methodName: string, data?: TDataType, successful?: boolean): void;
-        promiseWithCallback<TDataType>(service: any, methodName: string, callback: {
-            (...params: any[]): TDataType;
-        }, successful?: boolean): void;
-        flush<TDataType>(service: any): void;
-    }
-    var mock: IMock;
 }
 declare module rl.utilities.behaviors {
     var moduleName: string;
