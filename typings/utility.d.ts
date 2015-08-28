@@ -5,9 +5,6 @@ declare module rl.utilities.behaviors.stopEventPropogation {
         rlStopEventPropagation: string;
     }
 }
-declare module rl.utilities.behaviors {
-    var moduleName: string;
-}
 declare module rl.utilities.services.array {
     var moduleName: string;
     var serviceName: string;
@@ -49,14 +46,6 @@ declare module rl.utilities.services.object {
         valueOrDefault(value: any, defaultValue: any): any;
     }
 }
-declare module rl.utilities.filters.isEmpty {
-    var moduleName: string;
-    var serviceName: string;
-    var filterName: string;
-    interface IIsEmptyFilter {
-        (input: any, trueWhenEmpty?: boolean): boolean;
-    }
-}
 declare module rl.utilities.filters.truncate {
     var moduleName: string;
     var serviceName: string;
@@ -66,8 +55,13 @@ declare module rl.utilities.filters.truncate {
         (input?: number, truncateTo?: number, includeEllipses?: boolean): string;
     }
 }
-declare module rl.utilities.filters {
+declare module rl.utilities.filters.isEmpty {
     var moduleName: string;
+    var serviceName: string;
+    var filterName: string;
+    interface IIsEmptyFilter {
+        (input: any, trueWhenEmpty?: boolean): boolean;
+    }
 }
 declare module rl.utilities.services.autosaveAction {
     var moduleName: string;
@@ -101,6 +95,21 @@ declare module rl.utilities.services.boolean {
         toBool(object: any): boolean;
     }
 }
+declare module rl.utilities.services.breakpoints {
+    var lg: string;
+    var md: string;
+    var sm: string;
+    var xs: string;
+}
+declare module rl.utilities.services.breakpoints {
+    var visibleBreakpointsServiceName: string;
+    interface IVisibleBreakpointService {
+        isVisible(breakpoint: string): boolean;
+    }
+    class VisibleBreakpointService implements IVisibleBreakpointService {
+        isVisible(breakpoint: string): boolean;
+    }
+}
 declare module rl.utilities.services.observable {
     var moduleName: string;
     var factoryName: string;
@@ -131,6 +140,41 @@ declare module rl.utilities.services.observable {
         getInstance(): IObservableService;
     }
     function observableServiceFactory(): IObservableServiceFactory;
+}
+declare module rl.utilities.services.window {
+    var moduleName: string;
+    var serviceName: string;
+    interface IWindowService {
+        resize(callback: {
+            (event: JQueryEventObject): any;
+        }): void;
+    }
+}
+declare module rl.utilities.services.breakpoints {
+    import __window = rl.utilities.services.window;
+    import __observable = rl.utilities.services.observable;
+    var moduleName: string;
+    var serviceName: string;
+    interface IBreakpointService {
+        currentBreakpoint: string;
+        isBreakpoint(breakpoint: string): boolean;
+        register(action: {
+            (breakpoint: string): void;
+        }): __observable.IUnregisterFunction;
+    }
+    class BreakpointService implements IBreakpointService {
+        private visibleBreakpoints;
+        static $inject: string[];
+        constructor(visibleBreakpoints: IVisibleBreakpointService, resizeDebounceMilliseconds: number, windowService: __window.IWindowService, observableFactory: __observable.IObservableServiceFactory);
+        private observable;
+        currentBreakpoint: string;
+        private getBreakpoint();
+        isBreakpoint(breakpoint: string): boolean;
+        register(action: {
+            (breakpoint: string): void;
+        }): __observable.IUnregisterFunction;
+        private updateBreakpoint;
+    }
 }
 declare module rl.utilities.services.contentProvider {
     var moduleName: string;
@@ -216,12 +260,18 @@ declare module rl.utilities.services.date {
         getNow(): Date;
     }
 }
-declare module rl.utilities.services.jquery {
+declare module rl.utilities.services.date {
+    var dateTimeFormatServiceName: string;
+    interface IDateFormatStrings {
+        dateTimeFormat: string;
+        dateFormat: string;
+        timeFormat: string;
+    }
+    var defaultFormats: IDateFormatStrings;
+}
+declare module rl.utilities.services.date {
     var moduleName: string;
     var serviceName: string;
-    interface IJQueryUtility {
-        replaceContent(contentArea: JQuery, newContents: JQuery): void;
-    }
 }
 declare module rl.utilities.services.number {
     var moduleName: string;
@@ -229,6 +279,122 @@ declare module rl.utilities.services.number {
     interface INumberUtility {
         preciseRound(num: number, decimals: number): number;
         integerDivide(dividend: number, divisor: number): number;
+    }
+}
+declare module rl.utilities.services.fileSize {
+    var factoryName: string;
+    interface IFileSize {
+        display(): string;
+    }
+    interface IFileSizeFactory {
+        getInstance(bytes: number): IFileSize;
+    }
+    function fileSizeFactory(numberUtility: number.INumberUtility): IFileSizeFactory;
+}
+declare module rl.utilities.services.fileSize {
+    var simpleFilterName: string;
+    var filterName: string;
+    interface IFileSizeFilter {
+        (bytes?: number): string;
+    }
+    function fileSizeFilter(fileSizeFactory: IFileSizeFactory): IFileSizeFilter;
+}
+declare module rl.utilities.services.fileSize {
+    var moduleName: string;
+}
+declare module rl.utilities.services.string {
+    var moduleName: string;
+    var serviceName: string;
+    interface IStringUtilityService {
+        toNumber(string: string): number;
+        contains(str: string, substring?: string): boolean;
+        substitute(formatString: string, ...params: string[]): string;
+        replaceAll(str: string, patternToFind: string, replacementString: string): string;
+    }
+    class StringUtilityService implements IStringUtilityService {
+        toNumber(string: string): number;
+        contains(str: string, substring?: string): boolean;
+        substitute(formatString: string, ...params: string[]): string;
+        replaceAll(str: string, patternToFind: string, replacementString: string): string;
+    }
+}
+declare module rl.utilities.filter {
+    var moduleName: string;
+    interface IFilterWithCounts extends IFilter {
+        updateOptionCounts<TItemType>(data: TItemType[]): void;
+    }
+    interface IFilter {
+        type: string;
+        filter<TItemType>(item: TItemType): boolean;
+    }
+}
+declare module rl.utilities.services.genericSearchFilter {
+    var moduleName: string;
+    var factoryName: string;
+    var filterName: string;
+    interface IGenericSearchFilter extends filter.IFilter {
+        type: string;
+        searchText: string;
+        caseSensitive: boolean;
+        filter<TItemType>(item: TItemType): boolean;
+    }
+    class GenericSearchFilter implements IGenericSearchFilter {
+        private object;
+        private string;
+        type: string;
+        searchText: string;
+        caseSensitive: boolean;
+        constructor(object: object.IObjectUtility, string: string.IStringUtilityService);
+        filter<TItemType>(item: TItemType): boolean;
+        private searchObject<TItemType>(item, search, caseSensitive);
+    }
+    interface IGenericSearchFilterFactory {
+        getInstance(): IGenericSearchFilter;
+    }
+}
+declare module rl.utilities.services.jquery {
+    var moduleName: string;
+    var serviceName: string;
+    interface IJQueryUtility {
+        replaceContent(contentArea: JQuery, newContents: JQuery): void;
+    }
+}
+declare module rl.utilities.services.notification {
+    var moduleName: string;
+    var serviceName: string;
+    interface INotifier {
+        info(message: string): void;
+        warning(message: string): void;
+        error(message: string): void;
+        success(message: string): void;
+    }
+    interface INotificationService {
+        info(message: string): void;
+        warning(message: string): void;
+        error(message: string): void;
+        success(message: string): void;
+    }
+    class NotificationService implements INotificationService {
+        private notifier;
+        constructor(notifier: INotifier);
+        info(message: string): void;
+        warning(message: string): void;
+        error(message: string): void;
+        success(message: string): void;
+    }
+    interface INotificationServiceProvider extends ng.IServiceProvider {
+        setNotifier(notifier: INotifier): void;
+        $get(): INotificationService;
+    }
+    function notificationServiceProvider(): INotificationServiceProvider;
+}
+declare module rl.utilities.services.notification {
+    class BaseNotifier implements INotifier {
+        info(message: string): void;
+        warning(message: string): void;
+        error(message: string): void;
+        success(message: string): void;
+        private notify(message);
     }
 }
 declare module rl.utilities.services.parentChildBehavior {
@@ -271,145 +437,40 @@ declare module rl.utilities.services.promise {
         isPromise(promise: ng.IPromise<any>): boolean;
     }
 }
-declare module rl.utilities.services {
-    var moduleName: string;
-}
-declare module rl.utilities {
-    var moduleName: string;
-}
-declare module rl.utilities.filter {
-    var moduleName: string;
-    interface IFilterWithCounts extends IFilter {
-        updateOptionCounts<TItemType>(data: TItemType[]): void;
-    }
-    interface IFilter {
-        type: string;
-        filter<TItemType>(item: TItemType): boolean;
-    }
-}
-declare module rl.utilities.services.breakpoints {
-    var lg: string;
-    var md: string;
-    var sm: string;
-    var xs: string;
-}
-declare module rl.utilities.services.breakpoints {
-    var visibleBreakpointsServiceName: string;
-    interface IVisibleBreakpointService {
-        isVisible(breakpoint: string): boolean;
-    }
-    class VisibleBreakpointService implements IVisibleBreakpointService {
-        isVisible(breakpoint: string): boolean;
-    }
-}
-declare module rl.utilities.services.window {
-    var moduleName: string;
-    var serviceName: string;
-    interface IWindowService {
-        resize(callback: {
-            (event: JQueryEventObject): any;
-        }): void;
-    }
-}
-declare module rl.utilities.services.breakpoints {
-    import __window = rl.utilities.services.window;
-    import __observable = rl.utilities.services.observable;
-    var moduleName: string;
-    var serviceName: string;
-    interface IBreakpointService {
-        currentBreakpoint: string;
-        isBreakpoint(breakpoint: string): boolean;
-        register(action: {
-            (breakpoint: string): void;
-        }): __observable.IUnregisterFunction;
-    }
-    class BreakpointService implements IBreakpointService {
-        private visibleBreakpoints;
-        static $inject: string[];
-        constructor(visibleBreakpoints: IVisibleBreakpointService, resizeDebounceMilliseconds: number, windowService: __window.IWindowService, observableFactory: __observable.IObservableServiceFactory);
-        private observable;
-        currentBreakpoint: string;
-        private getBreakpoint();
-        isBreakpoint(breakpoint: string): boolean;
-        register(action: {
-            (breakpoint: string): void;
-        }): __observable.IUnregisterFunction;
-        private updateBreakpoint;
-    }
-}
-declare module rl.utilities.services.date {
-    var dateTimeFormatServiceName: string;
-    interface IDateFormatStrings {
-        dateTimeFormat: string;
-        dateFormat: string;
-        timeFormat: string;
-    }
-    var defaultFormats: IDateFormatStrings;
-}
-declare module rl.utilities.services.date {
-    var moduleName: string;
-    var serviceName: string;
-}
-declare module rl.utilities.services.fileSize {
-    var factoryName: string;
-    interface IFileSize {
-        display(): string;
-    }
-    interface IFileSizeFactory {
-        getInstance(bytes: number): IFileSize;
-    }
-    function fileSizeFactory(numberUtility: number.INumberUtility): IFileSizeFactory;
-}
-declare module rl.utilities.services.fileSize {
-    var simpleFilterName: string;
-    var filterName: string;
-    interface IFileSizeFilter {
-        (bytes?: number): string;
-    }
-    function fileSizeFilter(fileSizeFactory: IFileSizeFactory): IFileSizeFilter;
-}
-declare module rl.utilities.services.fileSize {
-    var moduleName: string;
-}
-declare module rl.utilities.services.string {
-    var moduleName: string;
-    var serviceName: string;
-    interface IStringUtilityService {
-        toNumber(string: string): number;
-        contains(str: string, substring?: string): boolean;
-        substitute(formatString: string, ...params: string[]): string;
-        replaceAll(str: string, patternToFind: string, replacementString: string): string;
-    }
-    class StringUtilityService implements IStringUtilityService {
-        toNumber(string: string): number;
-        contains(str: string, substring?: string): boolean;
-        substitute(formatString: string, ...params: string[]): string;
-        replaceAll(str: string, patternToFind: string, replacementString: string): string;
-    }
-}
-declare module rl.utilities.services.genericSearchFilter {
+declare module rl.utilities.services.validation {
     var moduleName: string;
     var factoryName: string;
-    var filterName: string;
-    interface IGenericSearchFilter extends filter.IFilter {
-        type: string;
-        searchText: string;
-        caseSensitive: boolean;
-        filter<TItemType>(item: TItemType): boolean;
+    interface IValidationHandler {
+        isActive?: {
+            (): boolean;
+        } | boolean;
+        validate(): boolean;
+        errorMessage: string | {
+            (): string;
+        };
     }
-    class GenericSearchFilter implements IGenericSearchFilter {
-        private object;
-        private string;
-        type: string;
-        searchText: string;
-        caseSensitive: boolean;
-        constructor(object: object.IObjectUtility, string: string.IStringUtilityService);
-        filter<TItemType>(item: TItemType): boolean;
-        private searchObject<TItemType>(item, search, caseSensitive);
+    interface IUnregisterFunction {
+        (): void;
     }
-    interface IGenericSearchFilterFactory {
-        getInstance(): IGenericSearchFilter;
+    interface IValidationService {
+        validate(): boolean;
+        registerValidationHandler(handler: IValidationHandler): IUnregisterFunction;
+        notifyAsError: boolean;
     }
+    class ValidationService implements IValidationService {
+        private notification;
+        private validationHandlers;
+        private nextKey;
+        notifyAsError: boolean;
+        constructor(notification: services.notification.INotificationService);
+        validate(): boolean;
+        registerValidationHandler(handler: IValidationHandler): IUnregisterFunction;
+        private unregister(key);
+    }
+    interface IValidationServiceFactory {
+        getInstance(): IValidationService;
+    }
+    function validationServiceFactory(notification: services.notification.INotificationService): IValidationServiceFactory;
 }
 declare module rl.utilities.services.test {
     interface IControllerResult<TControllerType> {
@@ -438,4 +499,16 @@ declare module rl.utilities.services.test {
         flush<TDataType>(service: any): void;
     }
     var mock: IMock;
+}
+declare module rl.utilities.behaviors {
+    var moduleName: string;
+}
+declare module rl.utilities.filters {
+    var moduleName: string;
+}
+declare module rl.utilities.services {
+    var moduleName: string;
+}
+declare module rl.utilities {
+    var moduleName: string;
 }
