@@ -55,6 +55,14 @@ declare module rl.utilities.filters.truncate {
         (input?: number, truncateTo?: number, includeEllipses?: boolean): string;
     }
 }
+declare module rl.utilities.filters.isEmpty {
+    var moduleName: string;
+    var serviceName: string;
+    var filterName: string;
+    interface IIsEmptyFilter {
+        (input: any, trueWhenEmpty?: boolean): boolean;
+    }
+}
 declare module rl.utilities.services.autosaveAction {
     var moduleName: string;
     var serviceName: string;
@@ -85,14 +93,6 @@ declare module rl.utilities.services.boolean {
     var serviceName: string;
     interface IBooleanUtility {
         toBool(object: any): boolean;
-    }
-}
-declare module rl.utilities.filters.isEmpty {
-    var moduleName: string;
-    var serviceName: string;
-    var filterName: string;
-    interface IIsEmptyFilter {
-        (input: any, trueWhenEmpty?: boolean): boolean;
     }
 }
 declare module rl.utilities.services.observable {
