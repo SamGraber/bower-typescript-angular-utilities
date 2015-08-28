@@ -5,6 +5,31 @@ declare module rl.utilities.behaviors.stopEventPropogation {
         rlStopEventPropagation: string;
     }
 }
+declare module rl.utilities.services.autosaveAction {
+    var moduleName: string;
+    var serviceName: string;
+    interface IAutosaveActionService {
+        trigger(promise: ng.IPromise<any>): void;
+        saving: boolean;
+        complete: boolean;
+        successful: boolean;
+    }
+}
+declare module rl.utilities.services.autosave {
+    var moduleName: string;
+    var factoryName: string;
+    interface IAutosaveService {
+        autosave(...data: any[]): boolean;
+        contentForm: ng.IFormController;
+    }
+    interface IAutosaveServiceFactory {
+        getInstance(save: {
+            (): ng.IPromise<void>;
+        }, contentForm?: ng.IFormController, validate?: {
+            (): boolean;
+        }): IAutosaveService;
+    }
+}
 declare module rl.utilities.services.array {
     var moduleName: string;
     var serviceName: string;
@@ -29,63 +54,11 @@ declare module rl.utilities.services.array {
         }): TDataType[];
     }
 }
-declare module rl.utilities.services.object {
+declare module rl.utilities.services.boolean {
     var moduleName: string;
     var serviceName: string;
-    interface IObjectUtility {
-        isNullOrEmpty(object: any[]): boolean;
-        isNullOrEmpty(object: number): boolean;
-        isNullOrEmpty(object: string): boolean;
-        isNullOrEmpty(object: any): boolean;
-        isNullOrWhitespace(object: any[]): boolean;
-        isNullOrWhitespace(object: number): boolean;
-        isNullOrWhitespace(object: string): boolean;
-        isNullOrWhitespace(object: any): boolean;
-        areEqual(obj1: any, obj2: any): boolean;
-        toString(object: any): string;
-        valueOrDefault(value: any, defaultValue: any): any;
-    }
-}
-declare module rl.utilities.filters.isEmpty {
-    var moduleName: string;
-    var serviceName: string;
-    var filterName: string;
-    interface IIsEmptyFilter {
-        (input: any, trueWhenEmpty?: boolean): boolean;
-    }
-}
-declare module rl.utilities.filters.truncate {
-    var moduleName: string;
-    var serviceName: string;
-    var filterName: string;
-    interface ITruncateFilter {
-        (input?: string, truncateTo?: number, includeEllipses?: boolean): string;
-        (input?: number, truncateTo?: number, includeEllipses?: boolean): string;
-    }
-}
-declare module rl.utilities.services.autosaveAction {
-    var moduleName: string;
-    var serviceName: string;
-    interface IAutosaveActionService {
-        trigger(promise: ng.IPromise<any>): void;
-        saving: boolean;
-        complete: boolean;
-        successful: boolean;
-    }
-}
-declare module rl.utilities.services.autosave {
-    var moduleName: string;
-    var factoryName: string;
-    interface IAutosaveService {
-        autosave(...data: any[]): boolean;
-        contentForm: ng.IFormController;
-    }
-    interface IAutosaveServiceFactory {
-        getInstance(save: {
-            (): ng.IPromise<void>;
-        }, contentForm?: ng.IFormController, validate?: {
-            (): boolean;
-        }): IAutosaveService;
+    interface IBooleanUtility {
+        toBool(object: any): boolean;
     }
 }
 declare module rl.utilities.services.breakpoints {
@@ -184,13 +157,6 @@ declare module rl.utilities.services.contentProvider {
         getInstance(): IContentProviderService;
     }
 }
-declare module rl.utilities.services.boolean {
-    var moduleName: string;
-    var serviceName: string;
-    interface IBooleanUtility {
-        toBool(object: any): boolean;
-    }
-}
 declare module rl.utilities.services.time {
     var moduleName: string;
     var serviceName: string;
@@ -273,6 +239,52 @@ declare module rl.utilities.services.date {
     var moduleName: string;
     var serviceName: string;
 }
+declare module rl.utilities.services.number {
+    var moduleName: string;
+    var serviceName: string;
+    interface INumberUtility {
+        preciseRound(num: number, decimals: number): number;
+        integerDivide(dividend: number, divisor: number): number;
+    }
+}
+declare module rl.utilities.services.fileSize {
+    var factoryName: string;
+    interface IFileSize {
+        display(): string;
+    }
+    interface IFileSizeFactory {
+        getInstance(bytes: number): IFileSize;
+    }
+    function fileSizeFactory(numberUtility: number.INumberUtility): IFileSizeFactory;
+}
+declare module rl.utilities.services.fileSize {
+    var simpleFilterName: string;
+    var filterName: string;
+    interface IFileSizeFilter {
+        (bytes?: number): string;
+    }
+    function fileSizeFilter(fileSizeFactory: IFileSizeFactory): IFileSizeFilter;
+}
+declare module rl.utilities.services.fileSize {
+    var moduleName: string;
+}
+declare module rl.utilities.services.object {
+    var moduleName: string;
+    var serviceName: string;
+    interface IObjectUtility {
+        isNullOrEmpty(object: any[]): boolean;
+        isNullOrEmpty(object: number): boolean;
+        isNullOrEmpty(object: string): boolean;
+        isNullOrEmpty(object: any): boolean;
+        isNullOrWhitespace(object: any[]): boolean;
+        isNullOrWhitespace(object: number): boolean;
+        isNullOrWhitespace(object: string): boolean;
+        isNullOrWhitespace(object: any): boolean;
+        areEqual(obj1: any, obj2: any): boolean;
+        toString(object: any): string;
+        valueOrDefault(value: any, defaultValue: any): any;
+    }
+}
 declare module rl.utilities.services.string {
     var moduleName: string;
     var serviceName: string;
@@ -322,35 +334,6 @@ declare module rl.utilities.services.genericSearchFilter {
     interface IGenericSearchFilterFactory {
         getInstance(): IGenericSearchFilter;
     }
-}
-declare module rl.utilities.services.number {
-    var moduleName: string;
-    var serviceName: string;
-    interface INumberUtility {
-        preciseRound(num: number, decimals: number): number;
-        integerDivide(dividend: number, divisor: number): number;
-    }
-}
-declare module rl.utilities.services.fileSize {
-    var factoryName: string;
-    interface IFileSize {
-        display(): string;
-    }
-    interface IFileSizeFactory {
-        getInstance(bytes: number): IFileSize;
-    }
-    function fileSizeFactory(numberUtility: number.INumberUtility): IFileSizeFactory;
-}
-declare module rl.utilities.services.fileSize {
-    var simpleFilterName: string;
-    var filterName: string;
-    interface IFileSizeFilter {
-        (bytes?: number): string;
-    }
-    function fileSizeFilter(fileSizeFactory: IFileSizeFactory): IFileSizeFilter;
-}
-declare module rl.utilities.services.fileSize {
-    var moduleName: string;
 }
 declare module rl.utilities.services.jquery {
     var moduleName: string;
@@ -426,6 +409,23 @@ declare module rl.utilities.services.test {
         flush<TDataType>(service: any): void;
     }
     var mock: IMock;
+}
+declare module rl.utilities.filters.isEmpty {
+    var moduleName: string;
+    var serviceName: string;
+    var filterName: string;
+    interface IIsEmptyFilter {
+        (input: any, trueWhenEmpty?: boolean): boolean;
+    }
+}
+declare module rl.utilities.filters.truncate {
+    var moduleName: string;
+    var serviceName: string;
+    var filterName: string;
+    interface ITruncateFilter {
+        (input?: string, truncateTo?: number, includeEllipses?: boolean): string;
+        (input?: number, truncateTo?: number, includeEllipses?: boolean): string;
+    }
 }
 declare module rl.utilities.behaviors {
     var moduleName: string;
