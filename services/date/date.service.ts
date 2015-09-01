@@ -34,7 +34,6 @@ module rl.utilities.services.date {
 	export class DateUtility {
 		static $inject: string[] = [momentWrapper.serviceName, time.serviceName];
 		constructor(private moment: moment.MomentStatic, private time: time.ITimeUtility) {
-
 			this.month = [
 				{ name: 'January', days: (): number => { return 31; } },
 				{ name: 'February', days: (year: number): number => { return this.isLeapYear(year) ? 29 : 28; } },

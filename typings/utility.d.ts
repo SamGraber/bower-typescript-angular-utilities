@@ -23,10 +23,9 @@ declare module rl.utilities.services.array {
         sum(array: number[]): number;
         toDictionary<TDataType>(array: TDataType[], keySelector: {
             (item: TDataType): string;
-        }): TDataType[];
-        toDictionary<TDataType>(array: TDataType[], keySelector: {
-            (item: TDataType): number;
-        }): TDataType[];
+        }): {
+            [index: string]: TDataType;
+        };
     }
 }
 declare module rl.utilities.services.object {
@@ -46,6 +45,14 @@ declare module rl.utilities.services.object {
         valueOrDefault(value: any, defaultValue: any): any;
     }
 }
+declare module rl.utilities.filters.isEmpty {
+    var moduleName: string;
+    var serviceName: string;
+    var filterName: string;
+    interface IIsEmptyFilter {
+        (input: any, trueWhenEmpty?: boolean): boolean;
+    }
+}
 declare module rl.utilities.filters.truncate {
     var moduleName: string;
     var serviceName: string;
@@ -53,14 +60,6 @@ declare module rl.utilities.filters.truncate {
     interface ITruncateFilter {
         (input?: string, truncateTo?: number, includeEllipses?: boolean): string;
         (input?: number, truncateTo?: number, includeEllipses?: boolean): string;
-    }
-}
-declare module rl.utilities.filters.isEmpty {
-    var moduleName: string;
-    var serviceName: string;
-    var filterName: string;
-    interface IIsEmptyFilter {
-        (input: any, trueWhenEmpty?: boolean): boolean;
     }
 }
 declare module rl.utilities.services.autosaveAction {
@@ -268,8 +267,7 @@ declare module rl.utilities.services.string {
         replaceAll(str: string, patternToFind: string, replacementString: string): string;
     }
 }
-declare module rl.utilities.filter {
-    var moduleName: string;
+declare module rl.utilities.filters {
     interface IFilterWithCounts extends IFilter {
         updateOptionCounts<TItemType>(data: TItemType[]): void;
     }
@@ -282,7 +280,7 @@ declare module rl.utilities.services.genericSearchFilter {
     var moduleName: string;
     var factoryName: string;
     var filterName: string;
-    interface IGenericSearchFilter extends filter.IFilter {
+    interface IGenericSearchFilter extends filters.IFilter {
         type: string;
         searchText: string;
         caseSensitive: boolean;
