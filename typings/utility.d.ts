@@ -94,52 +94,6 @@ declare module rl.utilities.services.boolean {
         toBool(object: any): boolean;
     }
 }
-declare module rl.utilities.services.observable {
-    var moduleName: string;
-    var factoryName: string;
-    interface IWatcher<TReturnType> {
-        action: IAction<TReturnType>;
-        event?: string;
-    }
-    interface IAction<TReturnType> {
-        (...params: any[]): TReturnType;
-    }
-    interface IUnregisterFunction {
-        (): void;
-    }
-    interface IObservableService {
-        register<TReturnType>(action: IAction<TReturnType>, event?: string): IUnregisterFunction;
-        register(action: IAction<void>, event?: string): IUnregisterFunction;
-        fire<TReturnType>(event?: string, ...params: any[]): TReturnType[];
-        fire(event?: string, ...params: any[]): void;
-    }
-    class ObservableService implements IObservableService {
-        private watchers;
-        private nextKey;
-        register<TReturnType>(action: IAction<TReturnType>, event?: string): IUnregisterFunction;
-        fire<TReturnType>(event?: string, ...params: any[]): TReturnType[];
-        private unregister(key);
-    }
-    interface IObservableServiceFactory {
-        getInstance(): IObservableService;
-    }
-    function observableServiceFactory(): IObservableServiceFactory;
-}
-declare module rl.utilities.services.contentProvider {
-    var moduleName: string;
-    var serviceName: string;
-    interface IContentProviderService {
-        setContent(content: JQuery): void;
-        setTranscludeContent(transcludeFunction: angular.ITranscludeFunction): void;
-        getContent(selector?: string): JQuery;
-        register(action: {
-            (newText: JQuery): void;
-        }, selector?: string): observable.IUnregisterFunction;
-    }
-    interface IContentProviderServiceFactory {
-        getInstance(): IContentProviderService;
-    }
-}
 declare module rl.utilities.services.time {
     var moduleName: string;
     var serviceName: string;
@@ -250,6 +204,52 @@ declare module rl.utilities.services.fileSize {
 }
 declare module rl.utilities.services.fileSize {
     var moduleName: string;
+}
+declare module rl.utilities.services.observable {
+    var moduleName: string;
+    var factoryName: string;
+    interface IWatcher<TReturnType> {
+        action: IAction<TReturnType>;
+        event?: string;
+    }
+    interface IAction<TReturnType> {
+        (...params: any[]): TReturnType;
+    }
+    interface IUnregisterFunction {
+        (): void;
+    }
+    interface IObservableService {
+        register<TReturnType>(action: IAction<TReturnType>, event?: string): IUnregisterFunction;
+        register(action: IAction<void>, event?: string): IUnregisterFunction;
+        fire<TReturnType>(event?: string, ...params: any[]): TReturnType[];
+        fire(event?: string, ...params: any[]): void;
+    }
+    class ObservableService implements IObservableService {
+        private watchers;
+        private nextKey;
+        register<TReturnType>(action: IAction<TReturnType>, event?: string): IUnregisterFunction;
+        fire<TReturnType>(event?: string, ...params: any[]): TReturnType[];
+        private unregister(key);
+    }
+    interface IObservableServiceFactory {
+        getInstance(): IObservableService;
+    }
+    function observableServiceFactory(): IObservableServiceFactory;
+}
+declare module rl.utilities.services.contentProvider {
+    var moduleName: string;
+    var serviceName: string;
+    interface IContentProviderService {
+        setContent(content: JQuery): void;
+        setTranscludeContent(transcludeFunction: angular.ITranscludeFunction): void;
+        getContent(selector?: string): JQuery;
+        register(action: {
+            (newText: JQuery): void;
+        }, selector?: string): observable.IUnregisterFunction;
+    }
+    interface IContentProviderServiceFactory {
+        getInstance(): IContentProviderService;
+    }
 }
 declare module rl.utilities.services.string {
     var moduleName: string;
