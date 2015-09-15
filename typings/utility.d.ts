@@ -1,10 +1,3 @@
-declare module rl.utilities.behaviors.stopEventPropogation {
-    var moduleName: string;
-    var directiveName: string;
-    interface IStopEventPropagationAttrs extends ng.IAttributes {
-        rlStopEventPropagation: string;
-    }
-}
 declare module rl.utilities.services.array {
     var moduleName: string;
     var serviceName: string;
@@ -45,6 +38,15 @@ declare module rl.utilities.services.object {
         valueOrDefault(value: any, defaultValue: any): any;
     }
 }
+declare module rl.utilities.filters.truncate {
+    var moduleName: string;
+    var serviceName: string;
+    var filterName: string;
+    interface ITruncateFilter {
+        (input?: string, truncateTo?: number, includeEllipses?: boolean): string;
+        (input?: number, truncateTo?: number, includeEllipses?: boolean): string;
+    }
+}
 declare module rl.utilities.filters.isEmpty {
     var moduleName: string;
     var serviceName: string;
@@ -53,13 +55,11 @@ declare module rl.utilities.filters.isEmpty {
         (input: any, trueWhenEmpty?: boolean): boolean;
     }
 }
-declare module rl.utilities.filters.truncate {
+declare module rl.utilities.behaviors.stopEventPropogation {
     var moduleName: string;
-    var serviceName: string;
-    var filterName: string;
-    interface ITruncateFilter {
-        (input?: string, truncateTo?: number, includeEllipses?: boolean): string;
-        (input?: number, truncateTo?: number, includeEllipses?: boolean): string;
+    var directiveName: string;
+    interface IStopEventPropagationAttrs extends ng.IAttributes {
+        rlStopEventPropagation: string;
     }
 }
 declare module rl.utilities.services.autosaveAction {
@@ -251,13 +251,6 @@ declare module rl.utilities.services.fileSize {
 declare module rl.utilities.services.fileSize {
     var moduleName: string;
 }
-declare module rl.utilities.services.jquery {
-    var moduleName: string;
-    var serviceName: string;
-    interface IJQueryUtility {
-        replaceContent(contentArea: JQuery, newContents: JQuery): void;
-    }
-}
 declare module rl.utilities.services.string {
     var moduleName: string;
     var serviceName: string;
@@ -388,11 +381,11 @@ declare module rl.utilities.services.promise {
 declare module rl.utilities.services.test {
     interface IControllerResult<TControllerType> {
         controller: TControllerType;
-        scope: angular.IScope;
+        scope: ng.IScope;
     }
     interface IDirectiveResult {
-        directive: angular.IDirective;
-        scope: angular.IScope;
+        directive: ng.IDirective;
+        scope: ng.IScope;
     }
     interface IAngularFixture {
         inject: (...serviceNames: string[]) => any;
@@ -447,6 +440,13 @@ declare module rl.utilities.services.validation {
         getInstance(): IValidationService;
     }
     function validationServiceFactory(notification: services.notification.INotificationService): IValidationServiceFactory;
+}
+declare module rl.utilities.services.jquery {
+    var moduleName: string;
+    var serviceName: string;
+    interface IJQueryUtility {
+        replaceContent(contentArea: JQuery, newContents: JQuery): void;
+    }
 }
 declare module rl.utilities.behaviors {
     var moduleName: string;
