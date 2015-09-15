@@ -251,13 +251,6 @@ declare module rl.utilities.services.fileSize {
 declare module rl.utilities.services.fileSize {
     var moduleName: string;
 }
-declare module rl.utilities.services.jquery {
-    var moduleName: string;
-    var serviceName: string;
-    interface IJQueryUtility {
-        replaceContent(contentArea: JQuery, newContents: JQuery): void;
-    }
-}
 declare module rl.utilities.services.string {
     var moduleName: string;
     var serviceName: string;
@@ -305,6 +298,13 @@ declare module rl.utilities.services.genericSearchFilter {
     }
     interface IGenericSearchFilterFactory {
         getInstance(): IGenericSearchFilter;
+    }
+}
+declare module rl.utilities.services.jquery {
+    var moduleName: string;
+    var serviceName: string;
+    interface IJQueryUtility {
+        replaceContent(contentArea: JQuery, newContents: JQuery): void;
     }
 }
 declare module rl.utilities.services.notification {
@@ -388,11 +388,11 @@ declare module rl.utilities.services.promise {
 declare module rl.utilities.services.test {
     interface IControllerResult<TControllerType> {
         controller: TControllerType;
-        scope: angular.IScope;
+        scope: ng.IScope;
     }
     interface IDirectiveResult {
-        directive: angular.IDirective;
-        scope: angular.IScope;
+        directive: ng.IDirective;
+        scope: ng.IScope;
     }
     interface IAngularFixture {
         inject: (...serviceNames: string[]) => any;
