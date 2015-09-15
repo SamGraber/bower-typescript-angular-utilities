@@ -222,84 +222,6 @@ declare module rl.utilities.services.date {
     var moduleName: string;
     var serviceName: string;
 }
-declare module rl.utilities.services.number {
-    var moduleName: string;
-    var serviceName: string;
-    interface INumberUtility {
-        preciseRound(num: number, decimals: number): number;
-        integerDivide(dividend: number, divisor: number): number;
-    }
-}
-declare module rl.utilities.services.fileSize {
-    var factoryName: string;
-    interface IFileSize {
-        display(): string;
-    }
-    interface IFileSizeFactory {
-        getInstance(bytes: number): IFileSize;
-    }
-    function fileSizeFactory(numberUtility: number.INumberUtility): IFileSizeFactory;
-}
-declare module rl.utilities.services.fileSize {
-    var simpleFilterName: string;
-    var filterName: string;
-    interface IFileSizeFilter {
-        (bytes?: number): string;
-    }
-    function fileSizeFilter(fileSizeFactory: IFileSizeFactory): IFileSizeFilter;
-}
-declare module rl.utilities.services.fileSize {
-    var moduleName: string;
-}
-declare module rl.utilities.services.string {
-    var moduleName: string;
-    var serviceName: string;
-    interface IStringUtilityService {
-        toNumber(string: string): number;
-        contains(str: string, substring?: string): boolean;
-        substitute(formatString: string, ...params: string[]): string;
-        replaceAll(str: string, patternToFind: string, replacementString: string): string;
-    }
-    class StringUtilityService implements IStringUtilityService {
-        toNumber(string: string): number;
-        contains(str: string, substring?: string): boolean;
-        substitute(formatString: string, ...params: string[]): string;
-        replaceAll(str: string, patternToFind: string, replacementString: string): string;
-    }
-}
-declare module rl.utilities.filters {
-    interface IFilterWithCounts extends IFilter {
-        updateOptionCounts<TItemType>(data: TItemType[]): void;
-    }
-    interface IFilter {
-        type: string;
-        filter<TItemType>(item: TItemType): boolean;
-    }
-}
-declare module rl.utilities.services.genericSearchFilter {
-    var moduleName: string;
-    var factoryName: string;
-    var filterName: string;
-    interface IGenericSearchFilter extends filters.IFilter {
-        type: string;
-        searchText: string;
-        caseSensitive: boolean;
-        filter<TItemType>(item: TItemType): boolean;
-    }
-    class GenericSearchFilter implements IGenericSearchFilter {
-        private object;
-        private string;
-        type: string;
-        searchText: string;
-        caseSensitive: boolean;
-        constructor(object: object.IObjectUtility, string: string.IStringUtilityService);
-        filter<TItemType>(item: TItemType): boolean;
-        private searchObject<TItemType>(item, search, caseSensitive);
-    }
-    interface IGenericSearchFilterFactory {
-        getInstance(): IGenericSearchFilter;
-    }
-}
 declare module rl.utilities.services.jquery {
     var moduleName: string;
     var serviceName: string;
@@ -345,6 +267,14 @@ declare module rl.utilities.services.notification {
         private notify(message);
     }
 }
+declare module rl.utilities.services.number {
+    var moduleName: string;
+    var serviceName: string;
+    interface INumberUtility {
+        preciseRound(num: number, decimals: number): number;
+        integerDivide(dividend: number, divisor: number): number;
+    }
+}
 declare module rl.utilities.services.parentChildBehavior {
     var moduleName: string;
     var serviceName: string;
@@ -383,6 +313,22 @@ declare module rl.utilities.services.promise {
     interface IPromiseUtility {
         isPromise(promise: any): boolean;
         isPromise(promise: ng.IPromise<any>): boolean;
+    }
+}
+declare module rl.utilities.services.string {
+    var moduleName: string;
+    var serviceName: string;
+    interface IStringUtilityService {
+        toNumber(string: string): number;
+        contains(str: string, substring?: string): boolean;
+        substitute(formatString: string, ...params: string[]): string;
+        replaceAll(str: string, patternToFind: string, replacementString: string): string;
+    }
+    class StringUtilityService implements IStringUtilityService {
+        toNumber(string: string): number;
+        contains(str: string, substring?: string): boolean;
+        substitute(formatString: string, ...params: string[]): string;
+        replaceAll(str: string, patternToFind: string, replacementString: string): string;
     }
 }
 declare module rl.utilities.services.test {
@@ -447,6 +393,60 @@ declare module rl.utilities.services.validation {
         getInstance(): IValidationService;
     }
     function validationServiceFactory(notification: services.notification.INotificationService): IValidationServiceFactory;
+}
+declare module rl.utilities.filters {
+    interface IFilterWithCounts extends IFilter {
+        updateOptionCounts<TItemType>(data: TItemType[]): void;
+    }
+    interface IFilter {
+        type: string;
+        filter<TItemType>(item: TItemType): boolean;
+    }
+}
+declare module rl.utilities.services.genericSearchFilter {
+    var moduleName: string;
+    var factoryName: string;
+    var filterName: string;
+    interface IGenericSearchFilter extends filters.IFilter {
+        type: string;
+        searchText: string;
+        caseSensitive: boolean;
+        filter<TItemType>(item: TItemType): boolean;
+    }
+    class GenericSearchFilter implements IGenericSearchFilter {
+        private object;
+        private string;
+        type: string;
+        searchText: string;
+        caseSensitive: boolean;
+        constructor(object: object.IObjectUtility, string: string.IStringUtilityService);
+        filter<TItemType>(item: TItemType): boolean;
+        private searchObject<TItemType>(item, search, caseSensitive);
+    }
+    interface IGenericSearchFilterFactory {
+        getInstance(): IGenericSearchFilter;
+    }
+}
+declare module rl.utilities.services.fileSize {
+    var factoryName: string;
+    interface IFileSize {
+        display(): string;
+    }
+    interface IFileSizeFactory {
+        getInstance(bytes: number): IFileSize;
+    }
+    function fileSizeFactory(numberUtility: number.INumberUtility): IFileSizeFactory;
+}
+declare module rl.utilities.services.fileSize {
+    var simpleFilterName: string;
+    var filterName: string;
+    interface IFileSizeFilter {
+        (bytes?: number): string;
+    }
+    function fileSizeFilter(fileSizeFactory: IFileSizeFactory): IFileSizeFilter;
+}
+declare module rl.utilities.services.fileSize {
+    var moduleName: string;
 }
 declare module rl.utilities.behaviors {
     var moduleName: string;
