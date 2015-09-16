@@ -1,3 +1,10 @@
+declare module rl.utilities.behaviors.stopEventPropogation {
+    var moduleName: string;
+    var directiveName: string;
+    interface IStopEventPropagationAttrs extends ng.IAttributes {
+        rlStopEventPropagation: string;
+    }
+}
 declare module rl.utilities.services.array {
     var moduleName: string;
     var serviceName: string;
@@ -53,13 +60,6 @@ declare module rl.utilities.filters.isEmpty {
     var filterName: string;
     interface IIsEmptyFilter {
         (input: any, trueWhenEmpty?: boolean): boolean;
-    }
-}
-declare module rl.utilities.behaviors.stopEventPropogation {
-    var moduleName: string;
-    var directiveName: string;
-    interface IStopEventPropagationAttrs extends ng.IAttributes {
-        rlStopEventPropagation: string;
     }
 }
 declare module rl.utilities.services.autosaveAction {
@@ -300,6 +300,13 @@ declare module rl.utilities.services.genericSearchFilter {
         getInstance(): IGenericSearchFilter;
     }
 }
+declare module rl.utilities.services.jquery {
+    var moduleName: string;
+    var serviceName: string;
+    interface IJQueryUtility {
+        replaceContent(contentArea: JQuery, newContents: JQuery): void;
+    }
+}
 declare module rl.utilities.services.notification {
     var moduleName: string;
     var serviceName: string;
@@ -390,7 +397,7 @@ declare module rl.utilities.services.test {
     interface IAngularFixture {
         inject: (...serviceNames: string[]) => any;
         mock: (mocks: any) => void;
-        controller<TControllerType>(controllerName: string, scope?: any, locals?: any): IControllerResult<TControllerType>;
+        controller<TControllerType>(controllerName: string, bindings?: any, locals?: any, bindToController?: boolean): IControllerResult<TControllerType>;
         directive: (dom: string) => IDirectiveResult;
     }
     var angularFixture: IAngularFixture;
@@ -440,13 +447,6 @@ declare module rl.utilities.services.validation {
         getInstance(): IValidationService;
     }
     function validationServiceFactory(notification: services.notification.INotificationService): IValidationServiceFactory;
-}
-declare module rl.utilities.services.jquery {
-    var moduleName: string;
-    var serviceName: string;
-    interface IJQueryUtility {
-        replaceContent(contentArea: JQuery, newContents: JQuery): void;
-    }
 }
 declare module rl.utilities.behaviors {
     var moduleName: string;
