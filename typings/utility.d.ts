@@ -45,6 +45,14 @@ declare module rl.utilities.services.object {
         valueOrDefault(value: any, defaultValue: any): any;
     }
 }
+declare module rl.utilities.filters.isEmpty {
+    var moduleName: string;
+    var serviceName: string;
+    var filterName: string;
+    interface IIsEmptyFilter {
+        (input: any, trueWhenEmpty?: boolean): boolean;
+    }
+}
 declare module rl.utilities.filters.truncate {
     var moduleName: string;
     var serviceName: string;
@@ -52,14 +60,6 @@ declare module rl.utilities.filters.truncate {
     interface ITruncateFilter {
         (input?: string, truncateTo?: number, includeEllipses?: boolean): string;
         (input?: number, truncateTo?: number, includeEllipses?: boolean): string;
-    }
-}
-declare module rl.utilities.filters.isEmpty {
-    var moduleName: string;
-    var serviceName: string;
-    var filterName: string;
-    interface IIsEmptyFilter {
-        (input: any, trueWhenEmpty?: boolean): boolean;
     }
 }
 declare module rl.utilities.services.autosaveAction {
@@ -251,6 +251,13 @@ declare module rl.utilities.services.fileSize {
 declare module rl.utilities.services.fileSize {
     var moduleName: string;
 }
+declare module rl.utilities.services.jquery {
+    var moduleName: string;
+    var serviceName: string;
+    interface IJQueryUtility {
+        replaceContent(contentArea: JQuery, newContents: JQuery): void;
+    }
+}
 declare module rl.utilities.services.string {
     var moduleName: string;
     var serviceName: string;
@@ -298,13 +305,6 @@ declare module rl.utilities.services.genericSearchFilter {
     }
     interface IGenericSearchFilterFactory {
         getInstance(): IGenericSearchFilter;
-    }
-}
-declare module rl.utilities.services.jquery {
-    var moduleName: string;
-    var serviceName: string;
-    interface IJQueryUtility {
-        replaceContent(contentArea: JQuery, newContents: JQuery): void;
     }
 }
 declare module rl.utilities.services.notification {
