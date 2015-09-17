@@ -1,67 +1,3 @@
-declare module rl.utilities.services.array {
-    var moduleName: string;
-    var serviceName: string;
-    interface IArrayUtility {
-        findIndexOf<TDataType>(array: TDataType[], predicate: {
-            (item: TDataType): boolean;
-        }): number;
-        remove<TDataType>(array: TDataType[], item: {
-            (obj: TDataType): boolean;
-        }): TDataType;
-        remove<TDataType>(array: TDataType[], item: TDataType): TDataType;
-        replace<TDataType>(array: TDataType[], oldItem: TDataType, newItem: TDataType): void;
-        sum<TDataType>(array: TDataType[], transform: {
-            (item: TDataType): number;
-        }): number;
-        sum(array: number[]): number;
-        toDictionary<TDataType>(array: TDataType[], keySelector: {
-            (item: TDataType): string;
-        }): {
-            [index: string]: TDataType;
-        };
-    }
-}
-declare module rl.utilities.services.object {
-    var moduleName: string;
-    var serviceName: string;
-    interface IObjectUtility {
-        isNullOrEmpty(object: any[]): boolean;
-        isNullOrEmpty(object: number): boolean;
-        isNullOrEmpty(object: string): boolean;
-        isNullOrEmpty(object: any): boolean;
-        isNullOrWhitespace(object: any[]): boolean;
-        isNullOrWhitespace(object: number): boolean;
-        isNullOrWhitespace(object: string): boolean;
-        isNullOrWhitespace(object: any): boolean;
-        areEqual(obj1: any, obj2: any): boolean;
-        toString(object: any): string;
-        valueOrDefault(value: any, defaultValue: any): any;
-    }
-}
-declare module rl.utilities.filters.truncate {
-    var moduleName: string;
-    var serviceName: string;
-    var filterName: string;
-    interface ITruncateFilter {
-        (input?: string, truncateTo?: number, includeEllipses?: boolean): string;
-        (input?: number, truncateTo?: number, includeEllipses?: boolean): string;
-    }
-}
-declare module rl.utilities.filters.isEmpty {
-    var moduleName: string;
-    var serviceName: string;
-    var filterName: string;
-    interface IIsEmptyFilter {
-        (input: any, trueWhenEmpty?: boolean): boolean;
-    }
-}
-declare module rl.utilities.behaviors.stopEventPropogation {
-    var moduleName: string;
-    var directiveName: string;
-    interface IStopEventPropagationAttrs extends ng.IAttributes {
-        rlStopEventPropagation: string;
-    }
-}
 declare module rl.utilities.services.autosaveAction {
     var moduleName: string;
     var serviceName: string;
@@ -85,6 +21,29 @@ declare module rl.utilities.services.autosave {
         }, contentForm?: ng.IFormController, validate?: {
             (): boolean;
         }): IAutosaveService;
+    }
+}
+declare module rl.utilities.services.array {
+    var moduleName: string;
+    var serviceName: string;
+    interface IArrayUtility {
+        findIndexOf<TDataType>(array: TDataType[], predicate: {
+            (item: TDataType): boolean;
+        }): number;
+        remove<TDataType>(array: TDataType[], item: {
+            (obj: TDataType): boolean;
+        }): TDataType;
+        remove<TDataType>(array: TDataType[], item: TDataType): TDataType;
+        replace<TDataType>(array: TDataType[], oldItem: TDataType, newItem: TDataType): void;
+        sum<TDataType>(array: TDataType[], transform: {
+            (item: TDataType): number;
+        }): number;
+        sum(array: number[]): number;
+        toDictionary<TDataType>(array: TDataType[], keySelector: {
+            (item: TDataType): string;
+        }): {
+            [index: string]: TDataType;
+        };
     }
 }
 declare module rl.utilities.services.boolean {
@@ -251,6 +210,30 @@ declare module rl.utilities.services.fileSize {
 declare module rl.utilities.services.fileSize {
     var moduleName: string;
 }
+declare module rl.utilities.services.jquery {
+    var moduleName: string;
+    var serviceName: string;
+    interface IJQueryUtility {
+        replaceContent(contentArea: JQuery, newContents: JQuery): void;
+    }
+}
+declare module rl.utilities.services.object {
+    var moduleName: string;
+    var serviceName: string;
+    interface IObjectUtility {
+        isNullOrEmpty(object: any[]): boolean;
+        isNullOrEmpty(object: number): boolean;
+        isNullOrEmpty(object: string): boolean;
+        isNullOrEmpty(object: any): boolean;
+        isNullOrWhitespace(object: any[]): boolean;
+        isNullOrWhitespace(object: number): boolean;
+        isNullOrWhitespace(object: string): boolean;
+        isNullOrWhitespace(object: any): boolean;
+        areEqual(obj1: any, obj2: any): boolean;
+        toString(object: any): string;
+        valueOrDefault(value: any, defaultValue: any): any;
+    }
+}
 declare module rl.utilities.services.string {
     var moduleName: string;
     var serviceName: string;
@@ -390,7 +373,7 @@ declare module rl.utilities.services.test {
     interface IAngularFixture {
         inject: (...serviceNames: string[]) => any;
         mock: (mocks: any) => void;
-        controller<TControllerType>(controllerName: string, scope?: any, locals?: any): IControllerResult<TControllerType>;
+        controller<TControllerType>(controllerName: string, bindings?: any, locals?: any, bindToController?: boolean): IControllerResult<TControllerType>;
         directive: (dom: string) => IDirectiveResult;
     }
     var angularFixture: IAngularFixture;
@@ -441,11 +424,28 @@ declare module rl.utilities.services.validation {
     }
     function validationServiceFactory(notification: services.notification.INotificationService): IValidationServiceFactory;
 }
-declare module rl.utilities.services.jquery {
+declare module rl.utilities.behaviors.stopEventPropogation {
+    var moduleName: string;
+    var directiveName: string;
+    interface IStopEventPropagationAttrs extends ng.IAttributes {
+        rlStopEventPropagation: string;
+    }
+}
+declare module rl.utilities.filters.isEmpty {
     var moduleName: string;
     var serviceName: string;
-    interface IJQueryUtility {
-        replaceContent(contentArea: JQuery, newContents: JQuery): void;
+    var filterName: string;
+    interface IIsEmptyFilter {
+        (input: any, trueWhenEmpty?: boolean): boolean;
+    }
+}
+declare module rl.utilities.filters.truncate {
+    var moduleName: string;
+    var serviceName: string;
+    var filterName: string;
+    interface ITruncateFilter {
+        (input?: string, truncateTo?: number, includeEllipses?: boolean): string;
+        (input?: number, truncateTo?: number, includeEllipses?: boolean): string;
     }
 }
 declare module rl.utilities.behaviors {
