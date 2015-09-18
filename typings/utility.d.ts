@@ -1,3 +1,10 @@
+declare module rl.utilities.behaviors.stopEventPropogation {
+    var moduleName: string;
+    var directiveName: string;
+    interface IStopEventPropagationAttrs extends ng.IAttributes {
+        rlStopEventPropagation: string;
+    }
+}
 declare module rl.utilities.services.array {
     var moduleName: string;
     var serviceName: string;
@@ -53,13 +60,6 @@ declare module rl.utilities.filters.truncate {
     interface ITruncateFilter {
         (input?: string, truncateTo?: number, includeEllipses?: boolean): string;
         (input?: number, truncateTo?: number, includeEllipses?: boolean): string;
-    }
-}
-declare module rl.utilities.behaviors.stopEventPropogation {
-    var moduleName: string;
-    var directiveName: string;
-    interface IStopEventPropagationAttrs extends ng.IAttributes {
-        rlStopEventPropagation: string;
     }
 }
 declare module rl.utilities.services.autosaveAction {
@@ -222,6 +222,36 @@ declare module rl.utilities.services.date {
     var moduleName: string;
     var serviceName: string;
 }
+declare module rl.utilities.services.number {
+    var moduleName: string;
+    var serviceName: string;
+    interface INumberUtility {
+        preciseRound(num: number, decimals: number): number;
+        integerDivide(dividend: number, divisor: number): number;
+        roundToStep(num: number, step: number): number;
+    }
+}
+declare module rl.utilities.services.fileSize {
+    var factoryName: string;
+    interface IFileSize {
+        display(): string;
+    }
+    interface IFileSizeFactory {
+        getInstance(bytes: number): IFileSize;
+    }
+    function fileSizeFactory(numberUtility: number.INumberUtility): IFileSizeFactory;
+}
+declare module rl.utilities.services.fileSize {
+    var simpleFilterName: string;
+    var filterName: string;
+    interface IFileSizeFilter {
+        (bytes?: number): string;
+    }
+    function fileSizeFilter(fileSizeFactory: IFileSizeFactory): IFileSizeFilter;
+}
+declare module rl.utilities.services.fileSize {
+    var moduleName: string;
+}
 declare module rl.utilities.services.string {
     var moduleName: string;
     var serviceName: string;
@@ -270,35 +300,6 @@ declare module rl.utilities.services.genericSearchFilter {
     interface IGenericSearchFilterFactory {
         getInstance(): IGenericSearchFilter;
     }
-}
-declare module rl.utilities.services.number {
-    var moduleName: string;
-    var serviceName: string;
-    interface INumberUtility {
-        preciseRound(num: number, decimals: number): number;
-        integerDivide(dividend: number, divisor: number): number;
-    }
-}
-declare module rl.utilities.services.fileSize {
-    var factoryName: string;
-    interface IFileSize {
-        display(): string;
-    }
-    interface IFileSizeFactory {
-        getInstance(bytes: number): IFileSize;
-    }
-    function fileSizeFactory(numberUtility: number.INumberUtility): IFileSizeFactory;
-}
-declare module rl.utilities.services.fileSize {
-    var simpleFilterName: string;
-    var filterName: string;
-    interface IFileSizeFilter {
-        (bytes?: number): string;
-    }
-    function fileSizeFilter(fileSizeFactory: IFileSizeFactory): IFileSizeFilter;
-}
-declare module rl.utilities.services.fileSize {
-    var moduleName: string;
 }
 declare module rl.utilities.services.jquery {
     var moduleName: string;
