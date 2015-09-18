@@ -5,9 +5,6 @@ declare module rl.utilities.behaviors.stopEventPropogation {
         rlStopEventPropagation: string;
     }
 }
-declare module rl.utilities.behaviors {
-    var moduleName: string;
-}
 declare module rl.utilities.services.array {
     var moduleName: string;
     var serviceName: string;
@@ -64,9 +61,6 @@ declare module rl.utilities.filters.truncate {
         (input?: string, truncateTo?: number, includeEllipses?: boolean): string;
         (input?: number, truncateTo?: number, includeEllipses?: boolean): string;
     }
-}
-declare module rl.utilities.filters {
-    var moduleName: string;
 }
 declare module rl.utilities.services.autosaveAction {
     var moduleName: string;
@@ -343,6 +337,15 @@ declare module rl.utilities.services.notification {
     }
     function notificationServiceProvider(): INotificationServiceProvider;
 }
+declare module rl.utilities.services.notification {
+    class BaseNotifier implements INotifier {
+        info(message: string): void;
+        warning(message: string): void;
+        error(message: string): void;
+        success(message: string): void;
+        private notify(message);
+    }
+}
 declare module rl.utilities.services.parentChildBehavior {
     var moduleName: string;
     var serviceName: string;
@@ -383,6 +386,34 @@ declare module rl.utilities.services.promise {
         isPromise(promise: ng.IPromise<any>): boolean;
     }
 }
+declare module rl.utilities.services.test {
+    interface IControllerResult<TControllerType> {
+        controller: TControllerType;
+        scope: ng.IScope;
+    }
+    interface IDirectiveResult {
+        directive: ng.IDirective;
+        scope: ng.IScope;
+    }
+    interface IAngularFixture {
+        inject: (...serviceNames: string[]) => any;
+        mock: (mocks: any) => void;
+        controllerWithBindings<TControllerType>(controllerName: string, bindings?: any, locals?: any, scope?: any): IControllerResult<TControllerType>;
+        directive: (dom: string) => IDirectiveResult;
+    }
+    var angularFixture: IAngularFixture;
+}
+declare module rl.utilities.services.test {
+    interface IMock {
+        service(service?: any): any;
+        promise<TDataType>(service: any, methodName: string, data?: TDataType, successful?: boolean): void;
+        promiseWithCallback<TDataType>(service: any, methodName: string, callback: {
+            (...params: any[]): TDataType;
+        }, successful?: boolean): void;
+        flush<TDataType>(service: any): void;
+    }
+    var mock: IMock;
+}
 declare module rl.utilities.services.validation {
     var moduleName: string;
     var factoryName: string;
@@ -418,46 +449,15 @@ declare module rl.utilities.services.validation {
     }
     function validationServiceFactory(notification: services.notification.INotificationService): IValidationServiceFactory;
 }
+declare module rl.utilities.behaviors {
+    var moduleName: string;
+}
+declare module rl.utilities.filters {
+    var moduleName: string;
+}
 declare module rl.utilities.services {
     var moduleName: string;
 }
 declare module rl.utilities {
     var moduleName: string;
-}
-declare module rl.utilities.services.notification {
-    class BaseNotifier implements INotifier {
-        info(message: string): void;
-        warning(message: string): void;
-        error(message: string): void;
-        success(message: string): void;
-        private notify(message);
-    }
-}
-declare module rl.utilities.services.test {
-    interface IControllerResult<TControllerType> {
-        controller: TControllerType;
-        scope: ng.IScope;
-    }
-    interface IDirectiveResult {
-        directive: ng.IDirective;
-        scope: ng.IScope;
-    }
-    interface IAngularFixture {
-        inject: (...serviceNames: string[]) => any;
-        mock: (mocks: any) => void;
-        controllerWithBindings<TControllerType>(controllerName: string, bindings?: any, locals?: any, scope?: any): IControllerResult<TControllerType>;
-        directive: (dom: string) => IDirectiveResult;
-    }
-    var angularFixture: IAngularFixture;
-}
-declare module rl.utilities.services.test {
-    interface IMock {
-        service(service?: any): any;
-        promise<TDataType>(service: any, methodName: string, data?: TDataType, successful?: boolean): void;
-        promiseWithCallback<TDataType>(service: any, methodName: string, callback: {
-            (...params: any[]): TDataType;
-        }, successful?: boolean): void;
-        flush<TDataType>(service: any): void;
-    }
-    var mock: IMock;
 }
